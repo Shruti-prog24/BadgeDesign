@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VELOOP Rewards — Task 11 Interactive Showcase</title>
+  <!-- Tailwind CSS CDN for universal browser compatibility -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            veloop: {
+              base: '#161827',
+              card: '#1E2238',
+              surface: '#252B46',
+              gold: '#FFD043',
+              cyan: '#64B5F6',
+              purple: '#7C4DFF'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+    @keyframes float-coin {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.9; }
+      50% { transform: translateY(-8px) rotate(6deg); opacity: 1; }
+      100% { transform: translateY(0px) rotate(0deg); opacity: 0.9; }
+    }
+    @keyframes shine {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .animate-shine {
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% 100%;
+      animation: shine 3s infinite;
+    }
+    .badge-clip {
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-[#0D0F1A] text-slate-100 min-h-screen p-3 sm:p-6 antialiased font-sans flex flex-col justify-between">
+  
+  <div class="max-w-5xl mx-auto w-full bg-[#161827] text-slate-100 rounded-2xl border border-slate-800 shadow-2xl overflow-hidden">
+    
+    <!-- Top Navigation Header -->
+    <header class="flex flex-wrap items-center justify-between border-b border-slate-800/80 px-5 py-3.5 bg-[#1A1D30]/90 backdrop-blur-md">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-black text-slate-950 text-base shadow-md shadow-amber-500/20">
+          VE
+        </div>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+            VELOOP Rewards
+            <span class="text-[10px] uppercase font-semibold bg-amber-400/10 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full">Task 11 Suite</span>
+          </h1>
+          <p class="text-[11px] text-slate-400">Mining Banner & 10-Level Achievement Badge System</p>
+        </div>
+      </div>
+
+      <!-- Tab Buttons -->
+      <nav class="flex items-center space-x-1.5 mt-3 sm:mt-0 text-xs font-medium">
+        <button id="tab-btn-banner" onclick="switchTab('banner')" class="px-3.5 py-1.5 rounded-lg transition bg-amber-400 text-slate-950 font-bold shadow-sm">
+          Mining Banner
+        </button>
+        <button id="tab-btn-badges" onclick="switchTab('badges')" class="px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60">
+          10-Tier Badges
+        </button>
+        <button id="tab-btn-gallery" onclick="switchTab('gallery')" class="px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60">
+          Concept Art Gallery
+        </button>
+        <button id="tab-btn-rationale" onclick="switchTab('rationale')" class="px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60">
+          Specs & Review
+        </button>
+      </nav>
+    </header>
+
+    <!-- MAIN VIEWPORT -->
+    <main class="p-4 sm:p-6">
+
+      <!-- TAB 1: MINING BANNER PREVIEW -->
+      <div id="tab-banner" class="space-y-4">
+        <!-- Controls bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-[#1F233B] p-3 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-400">Viewport Mode:</span>
+            <button id="btn-desktop" onclick="setBannerMode('desktop')" class="text-xs px-3 py-1 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/40 font-semibold">
+              Desktop (16:9)
+            </button>
+            <button id="btn-mobile" onclick="setBannerMode('mobile')" class="text-xs px-3 py-1 rounded-md bg-slate-800 text-slate-400 hover:text-slate-200 border border-transparent font-medium">
+              Mobile (3:4)
+            </button>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span class="text-xs font-medium text-emerald-400">Mining Engine Active</span>
+            </div>
+            <button onclick="toggleMining()" id="btn-toggle-mine" class="text-xs px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium transition">
+              Pause
+            </button>
+          </div>
+        </div>
+
+        <!-- Desktop Banner Container -->
+        <div id="banner-desktop-wrapper" class="relative rounded-2xl overflow-hidden border border-slate-700/80 bg-gradient-to-r from-[#121422] via-[#161827] to-[#1C2038] shadow-2xl p-6 sm:p-8 min-h-[340px] flex flex-col sm:flex-row items-center justify-between gap-6">
+          
+          <!-- Background Atmospheric Glows -->
+          <div class="absolute -top-20 -right-20 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-20 right-48 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Left UI & Microcopy Zone -->
+          <div class="w-full sm:w-1/2 space-y-4 z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold tracking-wide">
+              <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              SESSION 14 · HIGH YIELD
+            </div>
+
+            <div>
+              <h2 id="banner-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight">
+                Mine & Earn Every Second
+              </h2>
+              <p class="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed max-w-sm">
+                Activate passive mining sessions and accumulate valuable VE rewards directly to your wallet.
+              </p>
+            </div>
+
+            <!-- Realtime Metrics & Progress Bar -->
+            <div class="bg-[#121422]/90 border border-slate-800 rounded-xl p-4 space-y-3 backdrop-blur-md">
+              <div class="flex items-center justify-between text-xs">
+                <span class="text-slate-400 font-medium">Mining Progress</span>
+                <span id="progress-text" class="text-amber-300 font-bold font-mono">75.4%</span>
+              </div>
+              
+              <!-- Progress Bar -->
+              <div class="w-full bg-slate-800/80 rounded-full h-2.5 overflow-hidden relative">
+                <div id="progress-bar" class="bg-gradient-to-r from-amber-500 to-yellow-300 h-full rounded-full transition-all duration-300 relative w-3/4">
+                  <div class="absolute inset-0 animate-shine"></div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono pt-0.5">
+                <span id="timer-text">02h : 14m : 36s remaining</span>
+                <span class="text-emerald-400 font-semibold">+4.5 VE/min</span>
+              </div>
+            </div>
+
+            <!-- Action & Live Balance -->
+            <div class="flex items-center gap-3 pt-1">
+              <button onclick="claimRewards()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-amber-400/20 transition transform active:scale-95 flex items-center gap-2">
+                <span>Start Mining Now</span>
+                <span>→</span>
+              </button>
+              <div class="px-3.5 py-2 rounded-xl bg-slate-900/60 border border-slate-800">
+                <span class="text-[10px] text-slate-400 block uppercase font-medium">Accumulated</span>
+                <span id="ve-balance" class="text-xs sm:text-sm font-bold text-white font-mono">1,480.25 VE</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Graphical Kinetic Console Zone -->
+          <div class="w-full sm:w-1/2 flex items-center justify-center relative z-10">
+            <div class="relative w-72 h-72 flex items-center justify-center">
+              
+              <!-- Outer Gyro Rings -->
+              <div class="absolute inset-0 rounded-full border border-dashed border-amber-400/20 animate-spin" style="animation-duration: 30s;"></div>
+              <div class="absolute inset-4 rounded-full border border-cyan-400/20 animate-spin" style="animation-duration: 20s; animation-direction: reverse;"></div>
+
+              <!-- Center Holographic Generator Core -->
+              <div class="w-40 h-40 rounded-2xl bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 shadow-2xl flex flex-col items-center justify-center relative p-3 text-center">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg shadow-amber-500/40 mb-2 animate-bounce" style="animation-duration: 2.5s;">
+                  V
+                </div>
+                <span class="text-[10px] font-mono text-slate-300 uppercase tracking-widest">Core Minter</span>
+                <span class="text-xs font-bold text-amber-300 font-mono">HASH: 48.2 MH/s</span>
+              </div>
+
+              <!-- Floating VE Coins in Flow Arc -->
+              <div class="absolute -top-2 right-8 w-8 h-8 rounded-full bg-amber-400 border border-yellow-200 text-slate-950 text-xs font-black flex items-center justify-center shadow-lg shadow-amber-400/50" style="animation: float-coin 3s infinite;">
+                VE
+              </div>
+              <div class="absolute top-12 -right-2 w-7 h-7 rounded-full bg-amber-300 border border-yellow-100 text-slate-950 text-[10px] font-black flex items-center justify-center shadow-md shadow-amber-400/40" style="animation: float-coin 3s infinite 0.8s;">
+                VE
+              </div>
+              <div class="absolute bottom-6 right-2 w-9 h-9 rounded-full bg-amber-400 border border-yellow-200 text-slate-950 text-xs font-black flex items-center justify-center shadow-lg shadow-amber-400/50" style="animation: float-coin 3s infinite 1.5s;">
+                VE
+              </div>
+
+              <!-- Receiving Translucent Wallet Dock -->
+              <div class="absolute -bottom-2 right-12 bg-blue-950/70 border border-cyan-400/40 rounded-xl p-2 px-3 backdrop-blur-md shadow-xl flex items-center gap-2">
+                <div class="w-5 h-5 rounded bg-cyan-400/20 text-cyan-300 flex items-center justify-center text-xs">👛</div>
+                <span class="text-[11px] font-semibold text-cyan-200">Vault Dock</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Crop Container (Toggled via Viewport button) -->
+        <div id="banner-mobile-wrapper" class="hidden max-w-sm mx-auto rounded-2xl overflow-hidden border border-slate-700/80 bg-gradient-to-b from-[#141624] via-[#161827] to-[#1C2038] p-6 space-y-5 shadow-2xl">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-semibold bg-amber-400/10 text-amber-300 border border-amber-400/30 px-2.5 py-0.5 rounded-full">MOBILE 3:4 ADAPTIVE</span>
+            <span class="text-xs text-emerald-400 font-mono font-medium">Active · 75%</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Mine & Earn</h3>
+            <p class="text-xs text-slate-400 mt-1">Accumulate VE rewards directly to your secure balance.</p>
+          </div>
+          
+          <!-- Mobile Graphics Stack -->
+          <div class="w-full h-48 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-center relative overflow-hidden">
+            <div class="w-28 h-28 rounded-full border border-dashed border-amber-400/30 animate-spin absolute" style="animation-duration: 20s;"></div>
+            <div class="w-18 h-18 rounded-2xl bg-amber-400/20 border border-amber-400/50 flex items-center justify-center text-amber-300 font-black text-3xl z-10 shadow-lg p-3">
+              V
+            </div>
+            <div class="absolute bottom-2.5 left-4 text-[11px] text-slate-400 font-mono">1,480.25 VE</div>
+            <div class="absolute bottom-2.5 right-4 text-[11px] text-amber-400 font-semibold">Arc Yielding →</div>
+          </div>
+
+          <button onclick="claimRewards()" class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-md transition text-center">
+            Start Mining Now →
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 2: 10-TIER BADGE SYSTEM BROWSER -->
+      <div id="tab-badges" class="hidden space-y-5">
+        
+        <!-- Filter and State Toggles -->
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-[#1E2238] p-3.5 rounded-xl border border-slate-800">
+          <div>
+            <h3 class="text-sm font-bold text-white">10-Tier Achievement Progression</h3>
+            <p class="text-[11px] text-slate-400">Click any tier to inspect design tokens and unlock requirements.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="text-xs text-slate-300 cursor-pointer flex items-center gap-2">
+              <input type="checkbox" id="chk-locked" onchange="toggleLockState()" class="rounded bg-slate-800 border-slate-700 text-amber-400 focus:ring-0">
+              <span class="text-xs font-medium">Show in Locked State</span>
+            </label>
+            <button onclick="triggerCelebrationModal()" class="text-xs px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-bold hover:brightness-110 shadow-md transition">
+              Simulate Unlock 🎉
+            </button>
+          </div>
+        </div>
+
+        <!-- 10 Badge Horizontal Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3" id="badge-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Selected Badge Detailed Inspection Card -->
+        <div id="badge-detail-card" class="bg-[#191D32] border border-slate-700/80 rounded-2xl p-5 shadow-xl transition-all">
+          <!-- Populated by selectBadge() -->
+        </div>
+      </div>
+
+      <!-- TAB 3: CONCEPT ART GALLERY -->
+      <div id="tab-gallery" class="hidden space-y-5">
+        <div class="bg-[#1E2238] p-3.5 rounded-xl border border-slate-800">
+          <h3 class="text-sm font-bold text-white">Generated Concept Art Renders</h3>
+          <p class="text-[11px] text-slate-400">High-resolution concept art assets generated per the Task 11 Prompt Pack.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Banner Hero -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/mining_banner_hero_1788962975592.jpg" alt="Mining Banner Hero" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">A2. Desktop Hero Mining Banner (16:9)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Semi-3D kinetic console with floating VE coins and wallet dock.</p>
+            </div>
+          </div>
+
+          <!-- Mobile Crop -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/mining_banner_mobile_1788963125614.jpg" alt="Mobile Banner Crop" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">A4. Mobile Responsive Crop Variant (3:4)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Vertical hierarchy with clear top third for microcopy overlay.</p>
+            </div>
+          </div>
+
+          <!-- Master Badge Template -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/badge_master_template_1788962999763.jpg" alt="Master Badge Template" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">B2. Master Structural Hexagonal Crest (1:1)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Base foundation template establishing 60° angles and 42% inset ratio.</p>
+            </div>
+          </div>
+
+          <!-- Gold Badge -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/badge_gold_unlocked_1788963029065.jpg" alt="Level 03 Gold Badge" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">B3. Level 03 Gold Achievement Badge (1:1)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">24K polished gold finish with beveled border and star pips.</p>
+            </div>
+          </div>
+
+          <!-- Legend Badge -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/badge_legend_unlocked_1788963048601.jpg" alt="Level 10 Legend Badge" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">B3. Level 10 Legend Pinnacle Badge (1:1)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Multi-layer platinum, sapphire gemstone inlays, and imperial crown tiara.</p>
+            </div>
+          </div>
+
+          <!-- Locked Badge -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/badge_locked_state_1788963065355.jpg" alt="Locked Badge State" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">B4. Frosted Glass / Padlock Locked State (1:1)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Desaturated gunmetal and frosted glass with centered padlock glyph.</p>
+            </div>
+          </div>
+
+          <!-- Unlock Moment -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/badge_unlock_moment_1788963089268.jpg" alt="Unlock Celebration Moment" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">B5. Celebration Unlock Moment (1:1)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Radiant burst of golden light rays and particle sparkles.</p>
+            </div>
+          </div>
+
+          <!-- App Profile Mockup -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+            <img src="./assets/app_profile_mockup_1788963107101.jpg" alt="App Profile Screen Mockup" class="w-full h-48 object-cover">
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">B6. Dark UI App Profile Screen Mockup (16:9)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Full context preview showing badge row, balance card, and navigation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: SPECS & RATIONALE -->
+      <div id="tab-rationale" class="hidden space-y-4 text-xs sm:text-sm text-slate-300">
+        <div class="bg-[#1E2238] p-4 rounded-xl border border-slate-800 space-y-2">
+          <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2">
+            <span>🏛️</span> Executive Design Rationale
+          </h3>
+          <p class="leading-relaxed text-slate-300">
+            For VELOOP Rewards Task 11, the <strong>Kinetic Mining Console</strong> and <strong>Semi-3D Hexagonal Medallion Architecture</strong> were selected over casual cartoon gaming directions to uphold institutional fintech credibility. Rooted in base <code class="text-amber-300 font-mono">#161827</code> with gold, soft cyan, and deep gemstone highlights, the system reflects precision computational rewards rather than arcade gimmicks.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="bg-[#191D32] p-4 rounded-xl border border-slate-800 space-y-2">
+            <h4 class="font-semibold text-white">Figma Layering & Naming Standards</h4>
+            <ul class="space-y-1.5 text-slate-400 font-mono text-[11px]">
+              <li>• <span class="text-amber-300">Badge / [Tier] / [State] / [Size]</span></li>
+              <li>• <span class="text-cyan-300">Banner / Mining / [Viewport] / [State]</span></li>
+              <li>• <span class="text-emerald-300">Modal / UnlockCelebration / [Tier]</span></li>
+              <li>• <span class="text-purple-300">Toast / Notification / [Type]</span></li>
+            </ul>
+          </div>
+
+          <div class="bg-[#191D32] p-4 rounded-xl border border-slate-800 space-y-2">
+            <h4 class="font-semibold text-white">System Grammar Principles</h4>
+            <ul class="space-y-1 text-slate-400 text-xs">
+              <li>• <strong>Hexagonal Crest:</strong> 60° angles across all 10 tiers.</li>
+              <li>• <strong>42% Inset Ratio:</strong> Standardized central emblem cavity.</li>
+              <li>• <strong>45° Top-Left Keylight:</strong> Unified specular shine.</li>
+              <li>• <strong>No Baked Text:</strong> Clean vectors for dynamic localization.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- UNLOCK CELEBRATION MODAL (POPUP) -->
+    <div id="unlock-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden transition-opacity">
+      <div class="bg-[#161827] border-2 border-amber-400/60 rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center relative shadow-2xl shadow-amber-500/30 transform transition-all scale-95" id="modal-card">
+        
+        <!-- Radiant Glow Behind Badge -->
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-48 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Animated Badge in Modal -->
+        <div class="relative mx-auto w-24 h-24 mb-4 flex items-center justify-center">
+          <div class="absolute inset-0 rounded-full bg-amber-400/20 animate-ping" style="animation-duration: 2s;"></div>
+          <div id="modal-badge-icon" class="w-20 h-20 badge-clip bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 flex items-center justify-center text-slate-950 font-black text-2xl shadow-xl z-10 border-2 border-white/40">
+            V
+          </div>
+        </div>
+
+        <div class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-[11px] font-bold tracking-wider uppercase mb-2 border border-amber-400/30">
+          Achievement Unlocked
+        </div>
+        <h3 id="modal-tier-title" class="text-xl font-black text-white tracking-tight">Level 03: Gold Prospector</h3>
+        <p id="modal-tier-desc" class="text-xs text-slate-400 mt-2 leading-relaxed">
+          Substantial proof of dedication. Proven rewards master. You unlocked 250 bonus VE!
+        </p>
+
+        <div class="mt-6 flex items-center justify-center gap-3">
+          <button onclick="closeModal()" class="w-full py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg transition">
+            Collect Reward & Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="text-center text-xs text-slate-500 py-3">
+    VELOOP Rewards Design System · Task 11 Concept Architecture
+  </footer>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    const BADGES = [
+      { id: 1, name: "Bronze", title: "Genesis Miner", material: "Matte Brushed Bronze", color: "from-amber-800 to-yellow-900", border: "#CD7F32", req: "Complete 3 mining sessions & earn 50 VE", tooltip: "First step on your journey. Mining fundamentals established.", symbol: "VE Glyph" },
+      { id: 2, name: "Silver", title: "Steady Yield", material: "Brushed Sterling Silver", color: "from-slate-400 to-slate-200", border: "#E2E8F0", req: "Maintain 7-day streak & earn 500 VE", tooltip: "Consistent daily mining activity unlocked silver status.", symbol: "Refined VE" },
+      { id: 3, name: "Gold", title: "Gold Prospector", material: "24K Polished Yellow Gold", color: "from-amber-500 via-yellow-400 to-amber-300", border: "#FFD043", req: "Accumulate 2,500 VE via mining & staking", tooltip: "Substantial proof of dedication. Proven rewards master.", symbol: "Star & Chevron" },
+      { id: 4, name: "Platinum", title: "Apex Validator", material: "Cold-Rolled Platinum", color: "from-cyan-200 via-slate-300 to-blue-200", border: "#F1F5F9", req: "50 mining cycles with >95% uptime", tooltip: "Precision validator standing among elite network contributors.", symbol: "Layered Crest" },
+      { id: 5, name: "Diamond", title: "Diamond Reserve", material: "Crystalline Diamond Matrix", color: "from-sky-300 via-blue-200 to-indigo-200", border: "#BAE6FD", req: "Hold & compound 10,000 VE for 30 days", tooltip: "Unshakable conviction. Diamond-grade reserve status achieved.", symbol: "Prism Facet" },
+      { id: 6, name: "Emerald", title: "Emerald Sovereign", material: "Deep Imperial Emerald", color: "from-emerald-700 via-emerald-500 to-teal-400", border: "#34D399", req: "Achieve 25,000 VE earnings & refer 3 miners", tooltip: "Sovereign growth engine powering ecosystem expansion.", symbol: "Emerald Octagon" },
+      { id: 7, name: "Sapphire", title: "Sapphire Vanguard", material: "Royal Midnight Sapphire", color: "from-blue-900 via-blue-600 to-cyan-400", border: "#60A5FA", req: "50,000 VE with zero missed cycles in 60d", tooltip: "Steadfast reliability guarding the forefront of network yield.", symbol: "Star Sapphire" },
+      { id: 8, name: "Ruby", title: "Crimson Overlord", material: "Blood-Pigeon Ruby", color: "from-rose-900 via-red-600 to-pink-500", border: "#FB7185", req: "100,000 VE & participate in 10 proposals", tooltip: "Commanding authority and unwavering engagement in VELOOP governance.", symbol: "Crimson Aegis" },
+      { id: 9, name: "Master", title: "Yield Master", material: "Damascus Titanium + 24K Gold", color: "from-purple-900 via-amber-500 to-yellow-300", border: "#FBBF24", req: "250,000 VE lifetime & top 1% rank", tooltip: "Supreme operational mastery. One of the top yielders worldwide.", symbol: "Triple Coronet" },
+      { id: 10, name: "Legend", title: "VELOOP Legend", material: "Celestial Iridescent Alloy", color: "from-fuchsia-600 via-indigo-600 to-amber-300", border: "#F472B6", req: "1,000,000 VE lifetime volume", tooltip: "The pinnacle of VELOOP achievement. Immortalized in rewards history.", symbol: "Imperial Tiara" }
+    ];
+
+    let selectedBadgeIndex = 2; // Default Gold
+    let isMining = true;
+    let isLockedView = false;
+    let veAmount = 1480.25;
+
+    function renderBadges() {
+      const grid = document.getElementById('badge-grid');
+      grid.innerHTML = '';
+
+      BADGES.forEach((b, idx) => {
+        const isSelected = idx === selectedBadgeIndex;
+        const card = document.createElement('div');
+        card.className = `p-3 rounded-xl border transition-all cursor-pointer flex flex-col items-center text-center ${
+          isSelected 
+            ? 'bg-[#252A47] border-amber-400 shadow-lg shadow-amber-500/10' 
+            : 'bg-[#191D32] border-slate-800 hover:border-slate-700'
+        }`;
+        card.onclick = () => selectBadge(idx);
+
+        const badgeIconBg = isLockedView 
+          ? 'bg-slate-800 text-slate-500 border border-slate-700' 
+          : `bg-gradient-to-tr ${b.color} text-slate-950 font-black shadow-md border border-white/20`;
+
+        const badgeSymbol = isLockedView ? '🔒' : 'V';
+
+        card.innerHTML = `
+          <div class="w-12 h-14 badge-clip ${badgeIconBg} flex items-center justify-center text-sm font-black mb-2 transition transform hover:scale-105">
+            ${badgeSymbol}
+          </div>
+          <span class="text-[10px] uppercase tracking-wider font-semibold ${isLockedView ? 'text-slate-500' : 'text-amber-400'}">Lvl ${b.id < 10 ? '0' + b.id : b.id}</span>
+          <span class="text-xs font-bold text-white truncate w-full mt-0.5">${b.name}</span>
+        `;
+        grid.appendChild(card);
+      });
+
+      renderDetailCard();
+    }
+
+    function selectBadge(idx) {
+      selectedBadgeIndex = idx;
+      renderBadges();
+    }
+
+    function renderDetailCard() {
+      const b = BADGES[selectedBadgeIndex];
+      const card = document.getElementById('badge-detail-card');
+      const badgeIconBg = isLockedView 
+        ? 'bg-slate-800 text-slate-500 border border-slate-700' 
+        : `bg-gradient-to-tr ${b.color} text-slate-950 font-black shadow-lg border border-white/30`;
+
+      card.innerHTML = `
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-18 badge-clip ${badgeIconBg} flex items-center justify-center text-2xl font-black shadow-xl">
+              ${isLockedView ? '🔒' : 'V'}
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Level ${b.id < 10 ? '0' + b.id : b.id} · ${b.name}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full ${isLockedView ? 'bg-slate-800 text-slate-400' : 'bg-emerald-400/20 text-emerald-300 font-semibold'}">${isLockedView ? 'Locked State' : 'Active Tier'}</span>
+              </div>
+              <h4 class="text-lg font-black text-white">${b.title}</h4>
+              <p class="text-xs text-slate-400 mt-0.5"><em>"${b.tooltip}"</em></p>
+            </div>
+          </div>
+          <button onclick="triggerCelebrationModal(${b.id})" class="text-xs px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold transition shadow-md self-end sm:self-center">
+            Test Unlock Ceremony
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 pt-4 border-t border-slate-800/80 text-xs">
+          <div class="bg-[#121422] p-2.5 rounded-lg border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase block">Material & Finish</span>
+            <span class="font-semibold text-slate-200">${b.material}</span>
+          </div>
+          <div class="bg-[#121422] p-2.5 rounded-lg border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase block">Central Emblem</span>
+            <span class="font-semibold text-amber-300">${b.symbol}</span>
+          </div>
+          <div class="bg-[#121422] p-2.5 rounded-lg border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase block">Unlock Requirement</span>
+            <span class="font-semibold text-slate-200">${b.req}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function toggleLockState() {
+      isLockedView = document.getElementById('chk-locked').checked;
+      renderBadges();
+    }
+
+    function switchTab(tabId) {
+      document.getElementById('tab-banner').classList.add('hidden');
+      document.getElementById('tab-badges').classList.add('hidden');
+      document.getElementById('tab-gallery').classList.add('hidden');
+      document.getElementById('tab-rationale').classList.add('hidden');
+
+      const tabs = ['banner', 'badges', 'gallery', 'rationale'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-btn-' + t);
+        if (btn) btn.className = 'px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60';
+      });
+
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      document.getElementById('tab-btn-' + tabId).className = 'px-3.5 py-1.5 rounded-lg transition bg-amber-400 text-slate-950 font-bold shadow-sm';
+
+      if (tabId === 'badges') renderBadges();
+    }
+
+    function setBannerMode(mode) {
+      const desk = document.getElementById('banner-desktop-wrapper');
+      const mob = document.getElementById('banner-mobile-wrapper');
+      const btnDesk = document.getElementById('btn-desktop');
+      const btnMob = document.getElementById('btn-mobile');
+
+      if (mode === 'desktop') {
+        desk.classList.remove('hidden');
+        mob.classList.add('hidden');
+        btnDesk.className = 'text-xs px-3 py-1 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/40 font-semibold';
+        btnMob.className = 'text-xs px-3 py-1 rounded-md bg-slate-800 text-slate-400 hover:text-slate-200 border border-transparent font-medium';
+      } else {
+        desk.classList.add('hidden');
+        mob.classList.remove('hidden');
+        btnMob.className = 'text-xs px-3 py-1 rounded-md bg-amber-400/20 text-amber-300 border border-amber-400/40 font-semibold';
+        btnDesk.className = 'text-xs px-3 py-1 rounded-md bg-slate-800 text-slate-400 hover:text-slate-200 border border-transparent font-medium';
+      }
+    }
+
+    function toggleMining() {
+      isMining = !isMining;
+      const btn = document.getElementById('btn-toggle-mine');
+      btn.innerText = isMining ? 'Pause' : 'Resume';
+      btn.className = isMining 
+        ? 'text-xs px-3 py-1 rounded-md bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium transition'
+        : 'text-xs px-3 py-1 rounded-md bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition';
+    }
+
+    function claimRewards() {
+      triggerCelebrationModal(3);
+    }
+
+    function triggerCelebrationModal(tierId = null) {
+      const targetIdx = (tierId !== null) ? tierId - 1 : selectedBadgeIndex;
+      const b = BADGES[targetIdx];
+      const modal = document.getElementById('unlock-modal');
+      const title = document.getElementById('modal-tier-title');
+      const desc = document.getElementById('modal-tier-desc');
+      const badgeEl = document.getElementById('modal-badge-icon');
+
+      title.innerText = `Level ${b.id < 10 ? '0' + b.id : b.id}: ${b.title}`;
+      desc.innerText = `${b.tooltip} Congratulations, you have unlocked the ${b.name} tier!`;
+      badgeEl.className = `w-20 h-20 badge-clip bg-gradient-to-tr ${b.color} flex items-center justify-center text-slate-950 font-black text-2xl shadow-xl z-10 border-2 border-white/40`;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('unlock-modal').classList.add('hidden');
+    }
+
+    // Interval to simulate live VE mining ticks
+    setInterval(() => {
+      if (isMining) {
+        veAmount += 0.05;
+        const balEl = document.getElementById('ve-balance');
+        if (balEl) balEl.innerText = veAmount.toFixed(2) + ' VE';
+      }
+    }, 1000);
+
+    // Initial render
+    renderBadges();
+  </script>
+</body>
+</html>
