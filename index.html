@@ -41,17 +41,13 @@
       0% { background-position: -200% 0; }
       100% { background-position: 200% 0; }
     }
-    @keyframes orbit-cw {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    @keyframes orbit-ccw {
-      from { transform: rotate(360deg); }
-      to { transform: rotate(0deg); }
-    }
     @keyframes pulse-turbo {
       0%, 100% { box-shadow: 0 0 15px rgba(255, 208, 67, 0.3), inset 0 0 15px rgba(255, 208, 67, 0.2); }
       50% { box-shadow: 0 0 35px rgba(255, 208, 67, 0.7), inset 0 0 25px rgba(255, 208, 67, 0.4); }
+    }
+    @keyframes orb-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
     }
     .animate-shine {
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%);
@@ -62,8 +58,9 @@
       animation: pulse-turbo 1.5s infinite alternate;
       border-color: #FFD043 !important;
     }
-    .badge-clip {
-      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    .glass-orb {
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 45%, rgba(0,0,0,0.5) 85%);
+      box-shadow: inset 0 2px 6px rgba(255,255,255,0.4), inset 0 -4px 10px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.4);
     }
     .custom-scroll::-webkit-scrollbar {
       height: 6px;
@@ -77,7 +74,7 @@
 </head>
 <body class="bg-[#0D0F1A] text-slate-100 min-h-screen p-3 sm:p-6 antialiased font-sans flex flex-col justify-between selection:bg-amber-400 selection:text-slate-950">
   
-  <div class="max-w-5xl mx-auto w-full bg-[#161827] text-slate-100 rounded-3xl border border-slate-800/90 shadow-2xl overflow-hidden backdrop-blur-xl">
+  <div class="max-w-6xl mx-auto w-full bg-[#161827] text-slate-100 rounded-3xl border border-slate-800/90 shadow-2xl overflow-hidden backdrop-blur-xl">
     
     <!-- Top Navigation Header -->
     <header class="flex flex-wrap items-center justify-between border-b border-slate-800/80 px-5 py-4 bg-[#181B2E]/95 backdrop-blur-md sticky top-0 z-30">
@@ -90,7 +87,7 @@
             VELOOP Rewards
             <span class="text-[10px] uppercase tracking-wider font-bold bg-gradient-to-r from-amber-400/20 to-yellow-400/10 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">Task 11 Suite</span>
           </h1>
-          <p class="text-[11px] text-slate-400 font-medium">Kinetic Mining Console & 10-Level Achievement Badge System</p>
+          <p class="text-[11px] text-slate-400 font-medium">Kinetic Mining Console & 10-Tier Glass Orb Achievement System</p>
         </div>
       </div>
 
@@ -104,10 +101,10 @@
 
         <!-- Tabs -->
         <nav class="flex items-center space-x-1.5 text-xs font-medium bg-[#121422] p-1 rounded-xl border border-slate-800">
-          <button id="tab-btn-banner" onclick="switchTab('banner')" class="px-3.5 py-1.5 rounded-lg transition bg-amber-400 text-slate-950 font-bold shadow-md">
+          <button id="tab-btn-banner" onclick="switchTab('banner')" class="px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60">
             ⛏️ Mining Console
           </button>
-          <button id="tab-btn-badges" onclick="switchTab('badges')" class="px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60">
+          <button id="tab-btn-badges" onclick="switchTab('badges')" class="px-3.5 py-1.5 rounded-lg transition bg-amber-400 text-slate-950 font-bold shadow-md">
             🏅 10-Tier Badges
           </button>
           <button id="tab-btn-gallery" onclick="switchTab('gallery')" class="px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60">
@@ -124,9 +121,9 @@
     <main class="p-4 sm:p-6 space-y-6">
 
       <!-- ================================================================ -->
-      <!-- TAB 1: UPGRADED ULTRA-PREMIUM MINING BANNER & LIVE CONSOLE -->
+      <!-- TAB 1: MINING BANNER & LIVE CONSOLE -->
       <!-- ================================================================ -->
-      <div id="tab-banner" class="space-y-6">
+      <div id="tab-banner" class="hidden space-y-6">
 
         <!-- Top Controls & Telemetry Toggles -->
         <div class="flex flex-wrap items-center justify-between gap-3 bg-[#1B1F35] p-3 sm:p-3.5 rounded-2xl border border-slate-700/60 shadow-lg">
@@ -144,13 +141,11 @@
 
           <!-- Live Telemetry & Turbo Controls -->
           <div class="flex items-center gap-2.5">
-            <!-- Turbo Mining Mode Button -->
             <button id="btn-turbo" onclick="toggleTurbo()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold transition flex items-center gap-1.5 shadow-sm">
               <span>⚡</span>
               <span id="turbo-label">Turbo 2.5x: OFF</span>
             </button>
 
-            <!-- Engine State Indicator & Toggle -->
             <div class="flex items-center gap-2 bg-[#121422] px-3 py-1.5 rounded-lg border border-slate-800">
               <span class="relative flex h-2.5 w-2.5">
                 <span id="pulse-dot-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -165,24 +160,17 @@
           </div>
         </div>
 
-        <!-- ================= DESKTOP HERO BANNER (16:9) ================= -->
+        <!-- DESKTOP HERO BANNER (16:9) -->
         <div id="banner-desktop-wrapper" class="relative rounded-3xl overflow-hidden border border-slate-700/80 bg-[#161827] shadow-2xl min-h-[420px] transition-all">
-          
-          <!-- Background AI-Generated Hero Render Layer -->
           <div class="absolute inset-0 z-0">
             <img src="./assets/mining_hero_ultra.jpg" alt="Futuristic Quantum Mining Console" class="w-full h-full object-cover object-right sm:object-center transform scale-100 hover:scale-102 transition duration-700">
-            <!-- Gradient overlays to ensure text readability on the left -->
             <div class="absolute inset-0 bg-gradient-to-r from-[#121422] via-[#121422]/85 to-transparent sm:w-2/3"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#161827] via-transparent to-transparent"></div>
           </div>
 
-          <!-- Interactive Golden Particle Overlay Canvas -->
           <canvas id="mining-particle-canvas" class="absolute inset-0 z-10 pointer-events-none w-full h-full"></canvas>
 
-          <!-- Foreground Interactive UI Layer (Negative Space on Left) -->
           <div class="relative z-20 p-6 sm:p-10 flex flex-col justify-between min-h-[420px] max-w-xl space-y-6">
-            
-            <!-- Top Tagline & Status -->
             <div class="flex items-center gap-3">
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 border border-amber-400/40 text-amber-300 text-xs font-bold tracking-wider uppercase shadow-md shadow-amber-400/10">
                 <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
@@ -193,7 +181,6 @@
               </span>
             </div>
 
-            <!-- Primary Headline & Microcopy -->
             <div class="space-y-2.5">
               <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight drop-shadow-md">
                 Mine & Earn <br>
@@ -204,9 +191,7 @@
               </p>
             </div>
 
-            <!-- Real-Time Progress & Telemetry Glass Card -->
             <div class="bg-[#121422]/90 border border-slate-700/80 rounded-2xl p-4 sm:p-5 space-y-3.5 backdrop-blur-xl shadow-2xl">
-              
               <div class="flex items-center justify-between text-xs">
                 <div class="flex items-center gap-2">
                   <span class="text-slate-300 font-semibold">Session Progress</span>
@@ -215,14 +200,12 @@
                 <span id="progress-text" class="text-amber-300 font-black font-mono text-sm tracking-wide">75.4%</span>
               </div>
               
-              <!-- Segmented Progress Bar with Luminous Shine -->
               <div class="w-full bg-slate-900/90 rounded-full h-3 p-0.5 border border-slate-700/70 overflow-hidden relative shadow-inner">
                 <div id="progress-bar" class="bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-400 h-full rounded-full transition-all duration-300 relative w-3/4 shadow-lg shadow-amber-400/40">
                   <div class="absolute inset-0 animate-shine"></div>
                 </div>
               </div>
 
-              <!-- Milestone Indicators along timeline -->
               <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono px-1">
                 <span class="flex items-center gap-1 text-emerald-400"><span>✓</span> 25% Genesis</span>
                 <span class="flex items-center gap-1 text-emerald-400"><span>✓</span> 50% Silver</span>
@@ -230,7 +213,6 @@
                 <span class="flex items-center gap-1 text-slate-500"><span>🔒</span> 100% Mystery</span>
               </div>
 
-              <!-- Cycle Timer & Instant Rate -->
               <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-800/80">
                 <div class="flex items-center gap-1.5 text-slate-400 font-mono">
                   <span>⏱️</span>
@@ -243,7 +225,6 @@
               </div>
             </div>
 
-            <!-- Primary CTAs & Live Accumulated Counter -->
             <div class="flex flex-wrap items-center gap-3.5 pt-1">
               <button onclick="claimRewards()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black text-xs sm:text-sm shadow-xl shadow-amber-500/25 transition transform hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group">
                 <span>Start Mining Now</span>
@@ -266,10 +247,8 @@
           </div>
         </div>
 
-        <!-- ================= MOBILE ADAPTIVE BANNER (3:4) ================= -->
+        <!-- MOBILE ADAPTIVE BANNER (3:4) -->
         <div id="banner-mobile-wrapper" class="hidden max-w-sm mx-auto rounded-3xl overflow-hidden border border-slate-700/80 bg-[#161827] shadow-2xl relative transition-all">
-          
-          <!-- Background Visual Crop -->
           <div class="h-64 relative overflow-hidden">
             <img src="./assets/mining_mobile_ultra.jpg" alt="Mobile Mining Visual" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#161827]/40 to-[#161827]"></div>
@@ -284,14 +263,12 @@
             </div>
           </div>
 
-          <!-- Bottom Microcopy & Actions -->
           <div class="p-5 space-y-4 relative z-10 -mt-8 bg-[#161827] rounded-t-3xl border-t border-slate-700/50">
             <div>
               <h3 class="text-xl font-extrabold text-white">Mine & Earn</h3>
               <p class="text-xs text-slate-400 mt-1">Accumulate VE rewards directly to your secure balance.</p>
             </div>
 
-            <!-- Mobile Stats Card -->
             <div class="bg-[#121422] p-3 rounded-xl border border-slate-800 space-y-2">
               <div class="flex items-center justify-between text-xs font-mono">
                 <span class="text-slate-400">Total Mined:</span>
@@ -312,10 +289,8 @@
           </div>
         </div>
 
-        <!-- ================= FOUR LUXURY TELEMETRY CARDS ================= -->
+        <!-- FOUR LUXURY TELEMETRY CARDS -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-          
-          <!-- Card 1: Hash Rate -->
           <div class="bg-[#191D32] border border-slate-800/80 rounded-2xl p-4 shadow-lg flex flex-col justify-between hover:border-slate-700 transition">
             <div class="flex items-center justify-between text-slate-400 text-xs">
               <span class="font-medium">Network Hashrate</span>
@@ -325,7 +300,6 @@
               <span id="card-hashrate" class="text-lg sm:text-xl font-extrabold text-white font-mono">148.4 TH/s</span>
               <span class="text-[10px] text-emerald-400 block font-mono">▲ +2.8% live speed</span>
             </div>
-            <!-- Live Mini Sparkline Wave -->
             <div class="w-full h-6 flex items-end gap-1 pt-1 opacity-70">
               <div class="flex-1 bg-amber-400/40 rounded-t h-3 animate-pulse"></div>
               <div class="flex-1 bg-amber-400/70 rounded-t h-5"></div>
@@ -335,7 +309,6 @@
             </div>
           </div>
 
-          <!-- Card 2: Power Efficiency -->
           <div class="bg-[#191D32] border border-slate-800/80 rounded-2xl p-4 shadow-lg flex flex-col justify-between hover:border-slate-700 transition">
             <div class="flex items-center justify-between text-slate-400 text-xs">
               <span class="font-medium">Yield Efficiency</span>
@@ -350,7 +323,6 @@
             </div>
           </div>
 
-          <!-- Card 3: Active Multiplier -->
           <div class="bg-[#191D32] border border-slate-800/80 rounded-2xl p-4 shadow-lg flex flex-col justify-between hover:border-slate-700 transition">
             <div class="flex items-center justify-between text-slate-400 text-xs">
               <span class="font-medium">Active Multiplier</span>
@@ -365,7 +337,6 @@
             </span>
           </div>
 
-          <!-- Card 4: Next Badge Unlock Progress -->
           <div class="bg-[#191D32] border border-slate-800/80 rounded-2xl p-4 shadow-lg flex flex-col justify-between hover:border-slate-700 transition">
             <div class="flex items-center justify-between text-slate-400 text-xs">
               <span class="font-medium">Next Tier Unlock</span>
@@ -385,40 +356,46 @@
               </div>
             </div>
           </div>
-
         </div>
 
       </div>
 
       <!-- ================================================================ -->
-      <!-- TAB 2: 10-TIER BADGE SYSTEM BROWSER -->
+      <!-- TAB 2: REIMAGINED 10-TIER GLASS ORB BADGE SYSTEM -->
       <!-- ================================================================ -->
-      <div id="tab-badges" class="hidden space-y-5">
+      <div id="tab-badges" class="space-y-6">
         
-        <!-- Filter and State Toggles -->
-        <div class="flex flex-wrap items-center justify-between gap-3 bg-[#1E2238] p-3.5 rounded-2xl border border-slate-800">
+        <!-- Header & Filter Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-4 bg-[#1B1F35] p-4 rounded-2xl border border-slate-700/60 shadow-lg">
           <div>
-            <h3 class="text-sm font-bold text-white">10-Tier Achievement Progression</h3>
-            <p class="text-[11px] text-slate-400">Click any tier to inspect design tokens and unlock requirements.</p>
+            <div class="flex items-center gap-2">
+              <span class="text-base font-extrabold text-white">10-Level Achievement System</span>
+              <span class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">GLASS POD SERIES</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Click any capsule to inspect 3D materials, criteria, and hashrate boost.</p>
           </div>
-          <div class="flex items-center gap-3">
-            <label class="text-xs text-slate-300 cursor-pointer flex items-center gap-2">
-              <input type="checkbox" id="chk-locked" onchange="toggleLockState()" class="rounded bg-slate-800 border-slate-700 text-amber-400 focus:ring-0">
-              <span class="text-xs font-medium">Show in Locked State</span>
-            </label>
-            <button onclick="triggerCelebrationModal()" class="text-xs px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-bold hover:brightness-110 shadow-md transition">
-              Simulate Unlock 🎉
+
+          <!-- Filter Pills -->
+          <div class="flex flex-wrap items-center gap-1.5 text-xs">
+            <button onclick="setFilter('all')" id="filter-all" class="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold transition shadow-sm">
+              All (10)
+            </button>
+            <button onclick="setFilter('unlocked')" id="filter-unlocked" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition">
+              Unlocked (4)
+            </button>
+            <button onclick="setFilter('locked')" id="filter-locked" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition">
+              Locked (6)
             </button>
           </div>
         </div>
 
-        <!-- 10 Badge Horizontal Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3" id="badge-grid">
+        <!-- 10-Badge Grid (5 Columns on Desktop, 2 on Mobile) matching the reference format -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3.5 sm:gap-4" id="badge-grid">
           <!-- Populated by JS -->
         </div>
 
         <!-- Selected Badge Detailed Inspection Card -->
-        <div id="badge-detail-card" class="bg-[#191D32] border border-slate-700/80 rounded-2xl p-5 shadow-xl transition-all">
+        <div id="badge-detail-card" class="bg-[#191D32] border border-slate-700/90 rounded-3xl p-6 shadow-2xl transition-all">
           <!-- Populated by selectBadge() -->
         </div>
       </div>
@@ -432,94 +409,75 @@
           <p class="text-[11px] text-slate-400">High-resolution concept art assets generated per the Task 11 Prompt Pack specifications.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Bronze Orb -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/badge_orb_bronze.jpg" alt="Level 01 Bronze" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-amber-800 text-amber-200 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 01</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Level 01: Bronze (First Step)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Warm copper medal with laurel wreath inside glass orb.</p>
+            </div>
+          </div>
+
+          <!-- Gold Orb -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/badge_orb_gold.jpg" alt="Level 03 Gold" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 03</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Level 03: Gold (Reward Hunter)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">24K radiant gold shield with sunburst wreath in glass pod.</p>
+            </div>
+          </div>
+
+          <!-- Platinum Wings Orb -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/badge_orb_platinum.jpg" alt="Level 04 Platinum" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-cyan-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 04</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Level 04: Platinum (Elite Earner)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Silver aerodynamic wings with cyan crystal core.</p>
+            </div>
+          </div>
+
+          <!-- Ruby Orb -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/badge_orb_ruby.jpg" alt="Level 08 Ruby" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 08</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Level 08: Ruby (Elite)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Blood-red ruby crystal with rose gold crown in glass sphere.</p>
+            </div>
+          </div>
+
+          <!-- Legend Orb -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/badge_orb_legend.jpg" alt="Level 10 Legend" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 10</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Level 10: Legend (VELOOP Legend)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Golden spreading wings and imperial star crown regalia.</p>
+            </div>
+          </div>
+
           <!-- Ultra Hero Mining Banner -->
           <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
+            <div class="relative overflow-hidden h-48">
               <img src="./assets/mining_hero_ultra.jpg" alt="Quantum Mining Console Ultra" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <span class="absolute top-2 right-2 bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">HERO 16:9</span>
             </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">A2/A3. Quantum Mining Terminal Ultra (16:9)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Levitating quantum core minting golden VE coins into holographic crystal vault.</p>
-            </div>
-          </div>
-
-          <!-- Ultra Mobile Crop -->
-          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
-              <img src="./assets/mining_mobile_ultra.jpg" alt="Mobile Mining Ultra Crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <span class="absolute top-2 right-2 bg-cyan-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">MOBILE 3:4</span>
-            </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">A4. Mobile Responsive Crop Variant (3:4)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Vertical hierarchy with clear top third for microcopy overlay.</p>
-            </div>
-          </div>
-
-          <!-- Master Badge Template -->
-          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
-              <img src="./assets/badge_master_template_1788962999763.jpg" alt="Master Badge Template" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">B2. Master Structural Hexagonal Crest (1:1)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Base foundation template establishing 60° angles and 42% inset ratio.</p>
-            </div>
-          </div>
-
-          <!-- Gold Badge -->
-          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
-              <img src="./assets/badge_gold_unlocked_1788963029065.jpg" alt="Level 03 Gold Badge" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">B3. Level 03 Gold Achievement Badge (1:1)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">24K polished gold finish with beveled border and star pips.</p>
-            </div>
-          </div>
-
-          <!-- Legend Badge -->
-          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
-              <img src="./assets/badge_legend_unlocked_1788963048601.jpg" alt="Level 10 Legend Badge" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">B3. Level 10 Legend Pinnacle Badge (1:1)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Multi-layer platinum, sapphire gemstone inlays, and imperial crown tiara.</p>
-            </div>
-          </div>
-
-          <!-- Locked Badge -->
-          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
-              <img src="./assets/badge_locked_state_1788963065355.jpg" alt="Locked Badge State" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">B4. Frosted Glass / Padlock Locked State (1:1)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Desaturated gunmetal and frosted glass with centered padlock glyph.</p>
-            </div>
-          </div>
-
-          <!-- Unlock Moment -->
-          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
-              <img src="./assets/badge_unlock_moment_1788963089268.jpg" alt="Unlock Celebration Moment" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">B5. Celebration Unlock Moment (1:1)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Radiant burst of golden light rays and particle sparkles.</p>
-            </div>
-          </div>
-
-          <!-- App Profile Mockup -->
-          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
-            <div class="relative overflow-hidden h-52">
-              <img src="./assets/app_profile_mockup_1788963107101.jpg" alt="App Profile Screen Mockup" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            </div>
-            <div class="p-3.5">
-              <h4 class="text-xs font-bold text-white">B6. Dark UI App Profile Screen Mockup (16:9)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Full context preview showing badge row, balance card, and navigation.</p>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Quantum Mining Terminal (16:9)</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Levitating core minting coins into holographic crystal vault.</p>
             </div>
           </div>
         </div>
@@ -529,33 +487,35 @@
       <!-- TAB 4: SPECS & RATIONALE -->
       <!-- ================================================================ -->
       <div id="tab-rationale" class="hidden space-y-4 text-xs sm:text-sm text-slate-300">
-        <div class="bg-[#1E2238] p-4 rounded-2xl border border-slate-800 space-y-2">
+        <div class="bg-[#1E2238] p-5 rounded-2xl border border-slate-800 space-y-2">
           <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2">
             <span>🏛️</span> Executive Design Rationale
           </h3>
           <p class="leading-relaxed text-slate-300">
-            For VELOOP Rewards Task 11, the <strong>Kinetic Quantum Mining Console</strong> and <strong>Semi-3D Hexagonal Medallion Architecture</strong> were selected over casual cartoon gaming directions to uphold institutional fintech credibility. Rooted in base <code class="text-amber-300 font-mono">#161827</code> with gold, soft cyan, and deep gemstone highlights, the system reflects precision computational rewards rather than arcade gimmicks.
+            For VELOOP Rewards Task 11, the <strong>Glass Pod Achievement Series</strong> combines the prestige of Swiss horology with futuristic cryptographic token custody. Each tier is preserved inside a floating, refractive glass sphere pod that scales visually from understated bronze laurel wreaths up to winged platinum armatures and crown-crested imperial regalia.
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           <div class="bg-[#191D32] p-4 rounded-2xl border border-slate-800 space-y-2">
             <h4 class="font-semibold text-white">Figma Layering & Naming Standards</h4>
             <ul class="space-y-1.5 text-slate-400 font-mono text-[11px]">
-              <li>• <span class="text-amber-300">Badge / [Tier] / [State] / [Size]</span></li>
+              <li>• <span class="text-amber-300">Badge / GlassPod / [Tier] / [State]</span></li>
               <li>• <span class="text-cyan-300">Banner / Mining / [Viewport] / [State]</span></li>
               <li>• <span class="text-emerald-300">Modal / UnlockCelebration / [Tier]</span></li>
-              <li>• <span class="text-purple-300">Toast / Notification / [Type]</span></li>
+              <li>• <span class="text-purple-300">Tag / Rarity / [Common | Uncommon | Rare...]</span></li>
             </ul>
           </div>
 
           <div class="bg-[#191D32] p-4 rounded-2xl border border-slate-800 space-y-2">
-            <h4 class="font-semibold text-white">System Grammar Principles</h4>
+            <h4 class="font-semibold text-white">Rarity Escalation System</h4>
             <ul class="space-y-1 text-slate-400 text-xs">
-              <li>• <strong>Hexagonal Crest:</strong> 60° angles across all 10 tiers.</li>
-              <li>• <strong>42% Inset Ratio:</strong> Standardized central emblem cavity.</li>
-              <li>• <strong>45° Top-Left Keylight:</strong> Unified specular shine.</li>
-              <li>• <strong>No Baked Text:</strong> Clean vectors for dynamic localization.</li>
+              <li>• <strong>Common:</strong> Levels 01 & 02 (Bronze, Silver)</li>
+              <li>• <strong>Uncommon:</strong> Levels 03 & 04 (Gold, Platinum)</li>
+              <li>• <strong>Rare:</strong> Levels 05 & 06 (Diamond, Emerald)</li>
+              <li>• <strong>Epic:</strong> Levels 07 & 08 (Sapphire, Ruby)</li>
+              <li>• <strong>Mythic:</strong> Level 09 (Master)</li>
+              <li>• <strong>Legendary:</strong> Level 10 (Legend)</li>
             </ul>
           </div>
         </div>
@@ -566,23 +526,22 @@
     <div id="unlock-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden transition-opacity">
       <div class="bg-[#161827] border-2 border-amber-400/70 rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center relative shadow-2xl shadow-amber-500/40 transform transition-all scale-95" id="modal-card">
         
-        <!-- Radiant Glow Behind Badge -->
         <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-56 h-56 bg-amber-400/25 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Animated Badge in Modal -->
-        <div class="relative mx-auto w-24 h-24 mb-4 flex items-center justify-center">
+        <!-- Glass Orb in Modal -->
+        <div class="relative mx-auto w-32 h-32 mb-4 flex items-center justify-center">
           <div class="absolute inset-0 rounded-full bg-amber-400/25 animate-ping" style="animation-duration: 2s;"></div>
-          <div id="modal-badge-icon" class="w-20 h-20 badge-clip bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 flex items-center justify-center text-slate-950 font-black text-2xl shadow-xl z-10 border-2 border-white/40">
-            V
+          <div id="modal-badge-container" class="w-28 h-28 rounded-full glass-orb border-2 border-white/40 overflow-hidden relative shadow-2xl flex items-center justify-center">
+            <img id="modal-badge-img" src="./assets/badge_orb_gold.jpg" alt="Badge Modal" class="w-full h-full object-cover">
           </div>
         </div>
 
         <div class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-[11px] font-bold tracking-wider uppercase mb-2 border border-amber-400/40">
           Achievement Unlocked
         </div>
-        <h3 id="modal-tier-title" class="text-xl font-black text-white tracking-tight">Level 03: Gold Prospector</h3>
+        <h3 id="modal-tier-title" class="text-xl font-black text-white tracking-tight">Level 03: Gold (Reward Hunter)</h3>
         <p id="modal-tier-desc" class="text-xs text-slate-400 mt-2 leading-relaxed">
-          Substantial proof of dedication. Proven rewards master. You unlocked 250 bonus VE!
+          Substantial proof of dedication. Proven rewards master. You unlocked 250 bonus VE and +12% Hashrate!
         </p>
 
         <div class="mt-6 flex items-center justify-center gap-3">
@@ -600,7 +559,7 @@
   </footer>
 
   <!-- ================================================================ -->
-  <!-- JAVASCRIPT: PARTICLES, LIVE TICKER, AUDIO, & BADGES -->
+  <!-- JAVASCRIPT: DATA, PARTICLES, AUDIO, 10 BADGE SYSTEM -->
   <!-- ================================================================ -->
   <script>
     // --- Web Audio SFX Synthesizer ---
@@ -659,7 +618,7 @@
       } catch (e) {}
     }
 
-    // --- Interactive HTML5 Canvas Floating Particles ---
+    // --- HTML5 Canvas Particles for Mining Console ---
     const canvas = document.getElementById('mining-particle-canvas');
     let ctx = null;
     let particles = [];
@@ -717,25 +676,184 @@
       requestAnimationFrame(animateParticles);
     }
 
-    // --- Badge System Data ---
+    // --- Complete 10-Tier Glass Orb Badge System ---
     const BADGES = [
-      { id: 1, name: "Bronze", title: "Genesis Miner", material: "Matte Brushed Bronze", color: "from-amber-800 to-yellow-900", border: "#CD7F32", req: "Complete 3 mining sessions & earn 50 VE", tooltip: "First step on your journey. Mining fundamentals established.", symbol: "VE Glyph" },
-      { id: 2, name: "Silver", title: "Steady Yield", material: "Brushed Sterling Silver", color: "from-slate-400 to-slate-200", border: "#E2E8F0", req: "Maintain 7-day streak & earn 500 VE", tooltip: "Consistent daily mining activity unlocked silver status.", symbol: "Refined VE" },
-      { id: 3, name: "Gold", title: "Gold Prospector", material: "24K Polished Yellow Gold", color: "from-amber-500 via-yellow-400 to-amber-300", border: "#FFD043", req: "Accumulate 2,500 VE via mining & staking", tooltip: "Substantial proof of dedication. Proven rewards master.", symbol: "Star & Chevron" },
-      { id: 4, name: "Platinum", title: "Apex Validator", material: "Cold-Rolled Platinum", color: "from-cyan-200 via-slate-300 to-blue-200", border: "#F1F5F9", req: "50 mining cycles with >95% uptime", tooltip: "Precision validator standing among elite network contributors.", symbol: "Layered Crest" },
-      { id: 5, name: "Diamond", title: "Diamond Reserve", material: "Crystalline Diamond Matrix", color: "from-sky-300 via-blue-200 to-indigo-200", border: "#BAE6FD", req: "Hold & compound 10,000 VE for 30 days", tooltip: "Unshakable conviction. Diamond-grade reserve status achieved.", symbol: "Prism Facet" },
-      { id: 6, name: "Emerald", title: "Emerald Sovereign", material: "Deep Imperial Emerald", color: "from-emerald-700 via-emerald-500 to-teal-400", border: "#34D399", req: "Achieve 25,000 VE earnings & refer 3 miners", tooltip: "Sovereign growth engine powering ecosystem expansion.", symbol: "Emerald Octagon" },
-      { id: 7, name: "Sapphire", title: "Sapphire Vanguard", material: "Royal Midnight Sapphire", color: "from-blue-900 via-blue-600 to-cyan-400", border: "#60A5FA", req: "50,000 VE with zero missed cycles in 60d", tooltip: "Steadfast reliability guarding the forefront of network yield.", symbol: "Star Sapphire" },
-      { id: 8, name: "Ruby", title: "Crimson Overlord", material: "Blood-Pigeon Ruby", color: "from-rose-900 via-red-600 to-pink-500", border: "#FB7185", req: "100,000 VE & participate in 10 proposals", tooltip: "Commanding authority and unwavering engagement in VELOOP governance.", symbol: "Crimson Aegis" },
-      { id: 9, name: "Master", title: "Yield Master", material: "Damascus Titanium + 24K Gold", color: "from-purple-900 via-amber-500 to-yellow-300", border: "#FBBF24", req: "250,000 VE lifetime & top 1% rank", tooltip: "Supreme operational mastery. One of the top yielders worldwide.", symbol: "Triple Coronet" },
-      { id: 10, name: "Legend", title: "VELOOP Legend", material: "Celestial Iridescent Alloy", color: "from-fuchsia-600 via-indigo-600 to-amber-300", border: "#F472B6", req: "1,000,000 VE lifetime volume", tooltip: "The pinnacle of VELOOP achievement. Immortalized in rewards history.", symbol: "Imperial Tiara" }
+      { 
+        id: "01", 
+        level: 1, 
+        name: "Bronze", 
+        subtitle: "First Step", 
+        rarity: "COMMON", 
+        status: "unlocked", 
+        material: "Warm Copper & Laurel Wreath", 
+        color: "#CD7F32",
+        glow: "rgba(205, 127, 50, 0.4)",
+        boost: "+2% Mining Hashrate",
+        req: "Complete first 3 mining sessions & earn 50 VE", 
+        tooltip: "First step on your rewards journey. Mining fundamentals established.",
+        image: "./assets/badge_orb_bronze.jpg"
+      },
+      { 
+        id: "02", 
+        level: 2, 
+        name: "Silver", 
+        subtitle: "Rising Star", 
+        rarity: "COMMON", 
+        status: "unlocked", 
+        material: "Brushed Sterling Silver & Double Wreath", 
+        color: "#E2E8F0",
+        glow: "rgba(226, 232, 240, 0.4)",
+        boost: "+5% Mining Hashrate",
+        req: "Maintain a 7-day streak & accumulate 500 VE", 
+        tooltip: "Consistent daily mining activity unlocked silver status.",
+        image: "./assets/badge_master_template_1788962999763.jpg"
+      },
+      { 
+        id: "03", 
+        level: 3, 
+        name: "Gold", 
+        subtitle: "Reward Hunter", 
+        rarity: "UNCOMMON", 
+        status: "unlocked", 
+        material: "24K Polished Yellow Gold & Sunburst Wreath", 
+        color: "#FFD043",
+        glow: "rgba(255, 208, 67, 0.5)",
+        boost: "+12% Mining Hashrate",
+        req: "Accumulate 2,500 VE through mining and staking tasks", 
+        tooltip: "Substantial proof of dedication. Proven rewards master.",
+        image: "./assets/badge_orb_gold.jpg"
+      },
+      { 
+        id: "04", 
+        level: 4, 
+        name: "Platinum", 
+        subtitle: "Elite Earner", 
+        rarity: "UNCOMMON", 
+        status: "unlocked", 
+        material: "Cold-Rolled Platinum & Aerodynamic Wings", 
+        color: "#64B5F6",
+        glow: "rgba(100, 181, 246, 0.5)",
+        boost: "+20% Mining Hashrate",
+        req: "Complete 50 mining cycles with >95% uptime", 
+        tooltip: "Precision validator standing among elite network contributors.",
+        image: "./assets/badge_orb_platinum.jpg"
+      },
+      { 
+        id: "05", 
+        level: 5, 
+        name: "Diamond", 
+        subtitle: "High Achiever", 
+        rarity: "RARE", 
+        status: "locked", 
+        material: "Refractive Diamond Matrix & Titanium Prongs", 
+        color: "#BAE6FD",
+        glow: "rgba(186, 230, 253, 0.4)",
+        boost: "+35% Mining Hashrate",
+        req: "Hold and compound 10,000 VE for 30 consecutive days", 
+        tooltip: "Unshakable conviction. Diamond-grade reserve status achieved.",
+        image: "./assets/badge_locked_state_1788963065355.jpg"
+      },
+      { 
+        id: "06", 
+        level: 6, 
+        name: "Emerald", 
+        subtitle: "Reward Master", 
+        rarity: "RARE", 
+        status: "locked", 
+        material: "Imperial Emerald Gemstone & Platinum Laurel", 
+        color: "#34D399",
+        glow: "rgba(52, 211, 153, 0.4)",
+        boost: "+50% Mining Hashrate",
+        req: "Achieve 25,000 total VE earnings and refer 3 active miners", 
+        tooltip: "Sovereign growth engine powering ecosystem expansion.",
+        image: "./assets/badge_locked_state_1788963065355.jpg"
+      },
+      { 
+        id: "07", 
+        level: 7, 
+        name: "Sapphire", 
+        subtitle: "Top Performer", 
+        rarity: "EPIC", 
+        status: "locked", 
+        material: "Midnight Star Sapphire & Sculpted Wings", 
+        color: "#60A5FA",
+        glow: "rgba(96, 165, 250, 0.4)",
+        boost: "+65% Mining Hashrate",
+        req: "Reach 50,000 VE accumulated with zero missed cycles in 60d", 
+        tooltip: "Steadfast reliability guarding the forefront of network yield.",
+        image: "./assets/badge_locked_state_1788963065355.jpg"
+      },
+      { 
+        id: "08", 
+        level: 8, 
+        name: "Ruby", 
+        subtitle: "Elite", 
+        rarity: "EPIC", 
+        status: "locked", 
+        material: "Blood-Pigeon Ruby Gemstone & Rose Gold Crown", 
+        color: "#FB7185",
+        glow: "rgba(251, 113, 133, 0.5)",
+        boost: "+80% Mining Hashrate",
+        req: "Accumulate 100,000 VE & participate in 10 governance proposals", 
+        tooltip: "Commanding authority and unwavering engagement in VELOOP governance.",
+        image: "./assets/badge_orb_ruby.jpg"
+      },
+      { 
+        id: "09", 
+        level: 9, 
+        name: "Master", 
+        subtitle: "Master Achiever", 
+        rarity: "MYTHIC", 
+        status: "locked", 
+        material: "Damascus Titanium & Triple-Spike Coronet", 
+        color: "#C084FC",
+        glow: "rgba(192, 132, 252, 0.5)",
+        boost: "+90% Mining Hashrate",
+        req: "Reach 250,000 VE lifetime earnings & rank in top 1% miners", 
+        tooltip: "Supreme operational mastery. One of the top yielders worldwide.",
+        image: "./assets/badge_locked_state_1788963065355.jpg"
+      },
+      { 
+        id: "10", 
+        level: 10, 
+        name: "Legend", 
+        subtitle: "VELOOP Legend", 
+        rarity: "LEGENDARY", 
+        status: "locked", 
+        material: "Celestial Golden Wings & Imperial Star Tiara", 
+        color: "#FBBF24",
+        glow: "rgba(251, 191, 36, 0.65)",
+        boost: "+100% Mining Hashrate (2x)",
+        req: "Cross 1,000,000 VE lifetime volume and achieve legendary status", 
+        tooltip: "The pinnacle of VELOOP achievement. Immortalized in rewards history.",
+        image: "./assets/badge_orb_legend.jpg"
+      }
     ];
 
-    let selectedBadgeIndex = 2; // Default Gold
+    let selectedBadgeIndex = 2; // Default Gold (LV 03)
+    let currentFilter = 'all';
     let isMining = true;
     let isTurbo = false;
-    let isLockedView = false;
     let veAmount = 1480.25;
+
+    function getRarityStyle(rarity) {
+      switch(rarity) {
+        case 'COMMON':
+          return 'border-slate-700 bg-slate-800/60 text-slate-300';
+        case 'UNCOMMON':
+          return 'border-amber-400/40 bg-amber-400/10 text-amber-300';
+        case 'RARE':
+          return 'border-cyan-400/40 bg-cyan-400/10 text-cyan-300';
+        case 'EPIC':
+          return 'border-purple-400/40 bg-purple-400/10 text-purple-300';
+        case 'MYTHIC':
+          return 'border-fuchsia-400/40 bg-fuchsia-400/10 text-fuchsia-300';
+        case 'LEGENDARY':
+          return 'border-amber-400/60 bg-gradient-to-r from-amber-400/20 to-pink-500/20 text-amber-200 shadow-sm shadow-amber-400/20 font-bold';
+        default:
+          return 'border-slate-700 bg-slate-800 text-slate-300';
+      }
+    }
 
     function renderBadges() {
       const grid = document.getElementById('badge-grid');
@@ -743,30 +861,71 @@
       grid.innerHTML = '';
 
       BADGES.forEach((b, idx) => {
+        // Filter logic
+        if (currentFilter === 'unlocked' && b.status !== 'unlocked') return;
+        if (currentFilter === 'locked' && b.status !== 'locked') return;
+
         const isSelected = idx === selectedBadgeIndex;
+        const isUnlocked = b.status === 'unlocked';
         const card = document.createElement('div');
-        card.className = `p-3 rounded-2xl border transition-all cursor-pointer flex flex-col items-center text-center ${
+        
+        card.className = `rounded-2xl p-4 transition-all duration-300 cursor-pointer flex flex-col justify-between items-center text-center relative group ${
           isSelected 
-            ? 'bg-[#252A47] border-amber-400 shadow-xl shadow-amber-500/15 ring-1 ring-amber-400/50' 
-            : 'bg-[#191D32] border-slate-800 hover:border-slate-700'
+            ? 'bg-[#222742] border-2 border-amber-400 shadow-xl shadow-amber-500/20 ring-1 ring-amber-400/60' 
+            : 'bg-[#181B2E] border border-slate-800/90 hover:border-slate-600 hover:-translate-y-1'
         }`;
+        
         card.onclick = () => {
           playBeep(700, 'sine', 0.05);
           selectBadge(idx);
         };
 
-        const badgeIconBg = isLockedView 
-          ? 'bg-slate-800 text-slate-500 border border-slate-700' 
-          : `bg-gradient-to-tr ${b.color} text-slate-950 font-black shadow-md border border-white/20`;
-
-        const badgeSymbol = isLockedView ? '🔒' : 'V';
+        const rarityClass = getRarityStyle(b.rarity);
 
         card.innerHTML = `
-          <div class="w-12 h-14 badge-clip ${badgeIconBg} flex items-center justify-center text-sm font-black mb-2 transition transform hover:scale-110">
-            ${badgeSymbol}
+          <!-- Top Row: ID and Status Icon -->
+          <div class="w-full flex items-center justify-between text-xs mb-1">
+            <span class="font-mono text-slate-400 font-bold text-[11px]">${b.id}</span>
+            <span class="${isUnlocked ? 'text-amber-400 font-bold text-sm' : 'text-slate-500 text-xs'}">
+              ${isUnlocked ? '✓' : '🔒'}
+            </span>
           </div>
-          <span class="text-[10px] uppercase tracking-wider font-bold ${isLockedView ? 'text-slate-500' : 'text-amber-400'}">Lvl ${b.id < 10 ? '0' + b.id : b.id}</span>
-          <span class="text-xs font-bold text-white truncate w-full mt-0.5">${b.name}</span>
+
+          <!-- Center: Suspended Glass Orb Capsule -->
+          <div class="w-24 h-24 sm:w-28 sm:h-28 relative my-2 flex items-center justify-center">
+            
+            <!-- Ambient Glow Behind Orb -->
+            <div class="absolute inset-0 rounded-full blur-xl pointer-events-none opacity-40 transition group-hover:opacity-70" style="background: ${b.glow};"></div>
+
+            <!-- Glass Pod Orb Frame with Specular Highlights -->
+            <div class="w-full h-full rounded-full glass-orb border border-white/20 overflow-hidden relative shadow-xl flex items-center justify-center p-1">
+              <img src="${b.image}" alt="${b.name}" class="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition duration-500 ${isUnlocked ? '' : 'filter grayscale contrast-75 brightness-75'}">
+              
+              <!-- Specular reflection arc -->
+              <div class="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-transparent to-black/30 pointer-events-none"></div>
+
+              <!-- Lock overlay icon if locked -->
+              ${!isUnlocked ? '<div class="absolute inset-0 bg-black/40 flex items-center justify-center text-base">🔒</div>' : ''}
+            </div>
+
+            <!-- Floating Level Pill at Lower Rim -->
+            <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-slate-950/90 border border-slate-700/80 text-[10px] font-mono font-bold ${isUnlocked ? 'text-amber-300' : 'text-slate-400'} shadow">
+              LV ${b.id}
+            </div>
+          </div>
+
+          <!-- Bottom Microcopy -->
+          <div class="mt-2 w-full space-y-0.5">
+            <h4 class="text-sm font-extrabold text-white tracking-tight">${b.name}</h4>
+            <p class="text-[11px] text-slate-400 truncate w-full font-medium">${b.subtitle}</p>
+          </div>
+
+          <!-- Rarity Tag Pill -->
+          <div class="mt-2.5">
+            <span class="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded border ${rarityClass}">
+              ${b.rarity}
+            </span>
+          </div>
         `;
         grid.appendChild(card);
       });
@@ -783,40 +942,55 @@
       const b = BADGES[selectedBadgeIndex];
       const card = document.getElementById('badge-detail-card');
       if (!card) return;
-      const badgeIconBg = isLockedView 
-        ? 'bg-slate-800 text-slate-500 border border-slate-700' 
-        : `bg-gradient-to-tr ${b.color} text-slate-950 font-black shadow-xl border border-white/30`;
+      const isUnlocked = b.status === 'unlocked';
+      const rarityClass = getRarityStyle(b.rarity);
 
       card.innerHTML = `
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div class="flex items-center gap-4">
-            <div class="w-16 h-18 badge-clip ${badgeIconBg} flex items-center justify-center text-2xl font-black shadow-2xl">
-              ${isLockedView ? '🔒' : 'V'}
+            
+            <!-- Large Glass Orb Pod in Detail Card -->
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full glass-orb border-2 border-white/30 overflow-hidden relative shadow-2xl flex-shrink-0 flex items-center justify-center">
+              <img src="${b.image}" alt="${b.name}" class="w-full h-full object-cover rounded-full ${isUnlocked ? '' : 'filter grayscale contrast-75'}">
+              <div class="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-transparent to-black/30 pointer-events-none"></div>
+              ${!isUnlocked ? '<div class="absolute inset-0 bg-black/40 flex items-center justify-center text-xl">🔒</div>' : ''}
             </div>
+
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Level ${b.id < 10 ? '0' + b.id : b.id} · ${b.name}</span>
-                <span class="text-[10px] px-2 py-0.5 rounded-full ${isLockedView ? 'bg-slate-800 text-slate-400' : 'bg-emerald-400/20 text-emerald-300 font-bold'}">${isLockedView ? 'Locked State' : 'Active Tier'}</span>
+                <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">Level ${b.id}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded uppercase font-bold border ${rarityClass}">${b.rarity}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full ${isUnlocked ? 'bg-emerald-400/20 text-emerald-300 font-bold' : 'bg-slate-800 text-slate-400'}">
+                  ${isUnlocked ? '✓ Unlocked' : '🔒 Locked'}
+                </span>
               </div>
-              <h4 class="text-xl font-black text-white mt-0.5">${b.title}</h4>
+              <h3 class="text-xl font-black text-white mt-1">${b.name} — <span class="text-slate-300 font-bold">${b.subtitle}</span></h3>
               <p class="text-xs text-slate-400 mt-1"><em>"${b.tooltip}"</em></p>
             </div>
           </div>
-          <button onclick="triggerCelebrationModal(${b.id})" class="text-xs px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-bold transition shadow-lg self-end sm:self-center">
-            Test Unlock Ceremony 🎉
-          </button>
+
+          <!-- Actions -->
+          <div class="flex items-center gap-2.5 self-end sm:self-center">
+            <button onclick="toggleBadgeLock(${selectedBadgeIndex})" class="text-xs px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold transition">
+              ${isUnlocked ? 'Set as Locked' : 'Unlock Badge'}
+            </button>
+            <button onclick="triggerCelebrationModal(${b.level})" class="text-xs px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-300 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black transition shadow-lg">
+              Test Ceremony 🎉
+            </button>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-5 pt-4 border-t border-slate-800/90 text-xs">
-          <div class="bg-[#121422] p-3 rounded-xl border border-slate-800">
-            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Material & Finish</span>
+        <!-- 3 Inspection Metric Blocks -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-6 pt-5 border-t border-slate-800/90 text-xs">
+          <div class="bg-[#121422] p-3.5 rounded-2xl border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Material & Armor</span>
             <span class="font-semibold text-slate-200">${b.material}</span>
           </div>
-          <div class="bg-[#121422] p-3 rounded-xl border border-slate-800">
-            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Central Emblem</span>
-            <span class="font-semibold text-amber-300">${b.symbol}</span>
+          <div class="bg-[#121422] p-3.5 rounded-2xl border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Hashrate Yield Boost</span>
+            <span class="font-bold text-amber-300 font-mono">${b.boost}</span>
           </div>
-          <div class="bg-[#121422] p-3 rounded-xl border border-slate-800">
+          <div class="bg-[#121422] p-3.5 rounded-2xl border border-slate-800">
             <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Unlock Requirement</span>
             <span class="font-semibold text-slate-200">${b.req}</span>
           </div>
@@ -824,9 +998,25 @@
       `;
     }
 
-    function toggleLockState() {
-      playBeep(500, 'triangle', 0.05);
-      isLockedView = document.getElementById('chk-locked').checked;
+    function toggleBadgeLock(idx) {
+      playBeep(600, 'triangle', 0.05);
+      BADGES[idx].status = (BADGES[idx].status === 'unlocked') ? 'locked' : 'unlocked';
+      renderBadges();
+    }
+
+    function setFilter(filter) {
+      playBeep(750, 'sine', 0.04);
+      currentFilter = filter;
+      ['all', 'unlocked', 'locked'].forEach(f => {
+        const btn = document.getElementById('filter-' + f);
+        if (btn) {
+          if (f === filter) {
+            btn.className = 'px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold transition shadow-sm';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition';
+          }
+        }
+      });
       renderBadges();
     }
 
@@ -886,8 +1076,8 @@
         banner.classList.add('turbo-active');
         rateText.innerText = '+11.25 VE/min (2.5x)';
         rateText.className = 'text-amber-300 font-bold animate-pulse';
-        cardHash.innerText = '371.0 TH/s';
-        cardMult.innerText = '2.50x Turbo';
+        if (cardHash) cardHash.innerText = '371.0 TH/s';
+        if (cardMult) cardMult.innerText = '2.50x Turbo';
       } else {
         playBeep(450, 'sine', 0.08);
         label.innerText = 'Turbo 2.5x: OFF';
@@ -895,8 +1085,8 @@
         banner.classList.remove('turbo-active');
         rateText.innerText = '+4.5 VE/min';
         rateText.className = 'text-emerald-400 font-bold';
-        cardHash.innerText = '148.4 TH/s';
-        cardMult.innerText = '1.25x Yield';
+        if (cardHash) cardHash.innerText = '148.4 TH/s';
+        if (cardMult) cardMult.innerText = '1.25x Yield';
       }
     }
 
@@ -930,18 +1120,17 @@
       triggerCelebrationModal(3);
     }
 
-    function triggerCelebrationModal(tierId = null) {
+    function triggerCelebrationModal(level = 3) {
       playClaimSound();
-      const targetIdx = (tierId !== null) ? tierId - 1 : selectedBadgeIndex;
-      const b = BADGES[targetIdx];
+      const b = BADGES.find(x => x.level === level) || BADGES[2];
       const modal = document.getElementById('unlock-modal');
       const title = document.getElementById('modal-tier-title');
       const desc = document.getElementById('modal-tier-desc');
-      const badgeEl = document.getElementById('modal-badge-icon');
+      const img = document.getElementById('modal-badge-img');
 
-      title.innerText = `Level ${b.id < 10 ? '0' + b.id : b.id}: ${b.title}`;
-      desc.innerText = `${b.tooltip} Congratulations, you have unlocked the ${b.name} tier!`;
-      badgeEl.className = `w-20 h-20 badge-clip bg-gradient-to-tr ${b.color} flex items-center justify-center text-slate-950 font-black text-2xl shadow-2xl z-10 border-2 border-white/40`;
+      title.innerText = `Level ${b.id}: ${b.name} (${b.subtitle})`;
+      desc.innerText = `${b.tooltip} Congratulations, you have unlocked the ${b.name} tier! Claimed 250 bonus VE and ${b.boost}.`;
+      img.src = b.image;
 
       modal.classList.remove('hidden');
     }
