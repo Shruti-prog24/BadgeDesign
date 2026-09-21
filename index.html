@@ -45,10 +45,6 @@
       0%, 100% { box-shadow: 0 0 15px rgba(255, 208, 67, 0.3), inset 0 0 15px rgba(255, 208, 67, 0.2); }
       50% { box-shadow: 0 0 35px rgba(255, 208, 67, 0.7), inset 0 0 25px rgba(255, 208, 67, 0.4); }
     }
-    @keyframes orb-float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
     .animate-shine {
       background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0) 100%);
       background-size: 200% 100%;
@@ -58,9 +54,9 @@
       animation: pulse-turbo 1.5s infinite alternate;
       border-color: #FFD043 !important;
     }
-    .glass-orb {
-      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 45%, rgba(0,0,0,0.5) 85%);
-      box-shadow: inset 0 2px 6px rgba(255,255,255,0.4), inset 0 -4px 10px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.4);
+    .talisman-frame {
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 50%, rgba(0,0,0,0.6) 100%);
+      box-shadow: inset 0 1px 3px rgba(255,255,255,0.25), inset 0 -4px 10px rgba(0,0,0,0.7), 0 8px 24px rgba(0,0,0,0.5);
     }
     .custom-scroll::-webkit-scrollbar {
       height: 6px;
@@ -87,19 +83,17 @@
             VELOOP Rewards
             <span class="text-[10px] uppercase tracking-wider font-bold bg-gradient-to-r from-amber-400/20 to-yellow-400/10 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">Task 11 Suite</span>
           </h1>
-          <p class="text-[11px] text-slate-400 font-medium">Kinetic Mining Console & 10-Tier Glass Orb Achievement System</p>
+          <p class="text-[11px] text-slate-400 font-medium">Kinetic Mining Console & 10-Tier Unique Horology Achievement System</p>
         </div>
       </div>
 
       <!-- Navigation & Audio Switcher -->
       <div class="flex items-center gap-2.5 mt-3 sm:mt-0">
-        <!-- Audio FX Toggle -->
         <button id="btn-audio-toggle" onclick="toggleAudio()" title="Sound Effects" class="p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-amber-300 text-xs transition border border-slate-700 flex items-center gap-1.5">
           <span id="audio-icon">🔊</span>
           <span class="text-[11px] hidden sm:inline font-mono">SFX</span>
         </button>
 
-        <!-- Tabs -->
         <nav class="flex items-center space-x-1.5 text-xs font-medium bg-[#121422] p-1 rounded-xl border border-slate-800">
           <button id="tab-btn-banner" onclick="switchTab('banner')" class="px-3.5 py-1.5 rounded-lg transition text-slate-300 hover:text-white hover:bg-slate-800/60">
             ⛏️ Mining Console
@@ -128,7 +122,6 @@
         <!-- Top Controls & Telemetry Toggles -->
         <div class="flex flex-wrap items-center justify-between gap-3 bg-[#1B1F35] p-3 sm:p-3.5 rounded-2xl border border-slate-700/60 shadow-lg">
           
-          <!-- Viewport Mode Selector -->
           <div class="flex items-center gap-2">
             <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider text-[10px]">Viewport:</span>
             <button id="btn-desktop" onclick="setBannerMode('desktop')" class="text-xs px-3 py-1.5 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/50 font-bold shadow-sm transition">
@@ -139,7 +132,6 @@
             </button>
           </div>
 
-          <!-- Live Telemetry & Turbo Controls -->
           <div class="flex items-center gap-2.5">
             <button id="btn-turbo" onclick="toggleTurbo()" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold transition flex items-center gap-1.5 shadow-sm">
               <span>⚡</span>
@@ -361,35 +353,50 @@
       </div>
 
       <!-- ================================================================ -->
-      <!-- TAB 2: REIMAGINED 10-TIER GLASS ORB BADGE SYSTEM -->
+      <!-- TAB 2: UNIQUE 10-TIER TALISMAN / HOROLOGY BADGE SYSTEM -->
       <!-- ================================================================ -->
       <div id="tab-badges" class="space-y-6">
         
-        <!-- Header & Filter Bar -->
+        <!-- Header & Style / Filter Bar -->
         <div class="flex flex-wrap items-center justify-between gap-4 bg-[#1B1F35] p-4 rounded-2xl border border-slate-700/60 shadow-lg">
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-base font-extrabold text-white">10-Level Achievement System</span>
-              <span class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">GLASS POD SERIES</span>
+              <span class="text-base font-extrabold text-white">10-Tier Achievement System</span>
+              <span id="badge-style-tag" class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.5 rounded-full">
+                HOROLOGY TALISMANS
+              </span>
             </div>
-            <p class="text-xs text-slate-400 mt-0.5">Click any capsule to inspect 3D materials, criteria, and hashrate boost.</p>
+            <p class="text-xs text-slate-400 mt-0.5">Custom avant-garde crypto relics with dimensional gearwork, wings, and singularity cores.</p>
           </div>
 
-          <!-- Filter Pills -->
-          <div class="flex flex-wrap items-center gap-1.5 text-xs">
-            <button onclick="setFilter('all')" id="filter-all" class="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold transition shadow-sm">
-              All (10)
-            </button>
-            <button onclick="setFilter('unlocked')" id="filter-unlocked" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition">
-              Unlocked (4)
-            </button>
-            <button onclick="setFilter('locked')" id="filter-locked" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition">
-              Locked (6)
-            </button>
+          <!-- Controls: Style Switcher & Status Filter -->
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            <!-- Style Mode Switcher -->
+            <div class="flex items-center bg-[#121422] p-1 rounded-xl border border-slate-800">
+              <button onclick="setBadgeStyle('unique')" id="style-unique" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-bold transition shadow-sm text-[11px]">
+                ✦ Unique Horology
+              </button>
+              <button onclick="setBadgeStyle('orb')" id="style-orb" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium transition text-[11px]">
+                🔮 Glass Orb Pods
+              </button>
+            </div>
+
+            <!-- Status Filters -->
+            <div class="flex items-center gap-1 bg-[#121422] p-1 rounded-xl border border-slate-800">
+              <button onclick="setFilter('all')" id="filter-all" class="px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold transition text-[11px]">
+                All (10)
+              </button>
+              <button onclick="setFilter('unlocked')" id="filter-unlocked" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-slate-200 font-medium transition text-[11px]">
+                Unlocked (4)
+              </button>
+              <button onclick="setFilter('locked')" id="filter-locked" class="px-2.5 py-1 rounded-lg text-slate-400 hover:text-slate-200 font-medium transition text-[11px]">
+                Locked (6)
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- 10-Badge Grid (5 Columns on Desktop, 2 on Mobile) matching the reference format -->
+        <!-- 10-Badge Grid (5 Columns on Desktop, 2 on Mobile) -->
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3.5 sm:gap-4" id="badge-grid">
           <!-- Populated by JS -->
         </div>
@@ -404,69 +411,84 @@
       <!-- TAB 3: CONCEPT ART GALLERY -->
       <!-- ================================================================ -->
       <div id="tab-gallery" class="hidden space-y-5">
-        <div class="bg-[#1E2238] p-4 rounded-2xl border border-slate-800">
-          <h3 class="text-sm font-bold text-white">Generated Concept Art Renders</h3>
-          <p class="text-[11px] text-slate-400">High-resolution concept art assets generated per the Task 11 Prompt Pack specifications.</p>
+        <div class="bg-[#1E2238] p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-bold text-white">Generated Concept Art Renders</h3>
+            <p class="text-[11px] text-slate-400">High-resolution concept art assets generated per the Task 11 Prompt Pack.</p>
+          </div>
+          <span class="text-xs bg-amber-400/15 text-amber-300 border border-amber-400/30 px-2.5 py-1 rounded-full font-mono font-bold">14 ASSETS</span>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <!-- Bronze Orb -->
+          <!-- Unique Bronze Astrolabe -->
           <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
             <div class="relative overflow-hidden h-48">
-              <img src="./assets/badge_orb_bronze.jpg" alt="Level 01 Bronze" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <span class="absolute top-2 right-2 bg-amber-800 text-amber-200 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 01</span>
+              <img src="./assets/badge_unique_bronze.jpg" alt="Unique Bronze" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-amber-800 text-amber-200 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 01 UNIQUE</span>
             </div>
             <div class="p-3">
-              <h4 class="text-xs font-bold text-white">Level 01: Bronze (First Step)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Warm copper medal with laurel wreath inside glass orb.</p>
+              <h4 class="text-xs font-bold text-white">01. Bronze Genesis Astrolabe</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Satin copper gyroscopic rings with precision laser-calibrated coordinates.</p>
             </div>
           </div>
 
-          <!-- Gold Orb -->
+          <!-- Unique Gold Chronometer -->
           <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
             <div class="relative overflow-hidden h-48">
-              <img src="./assets/badge_orb_gold.jpg" alt="Level 03 Gold" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <span class="absolute top-2 right-2 bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 03</span>
+              <img src="./assets/badge_unique_gold.jpg" alt="Unique Gold" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 03 UNIQUE</span>
             </div>
             <div class="p-3">
-              <h4 class="text-xs font-bold text-white">Level 03: Gold (Reward Hunter)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">24K radiant gold shield with sunburst wreath in glass pod.</p>
+              <h4 class="text-xs font-bold text-white">03. Gold Solar Chronometer</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Avant-garde Swiss horology gearwork with radiant star compass core.</p>
             </div>
           </div>
 
-          <!-- Platinum Wings Orb -->
+          <!-- Unique Platinum Aero Sigil -->
           <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
             <div class="relative overflow-hidden h-48">
-              <img src="./assets/badge_orb_platinum.jpg" alt="Level 04 Platinum" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <span class="absolute top-2 right-2 bg-cyan-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 04</span>
+              <img src="./assets/badge_unique_platinum.jpg" alt="Unique Platinum" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-cyan-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 04 UNIQUE</span>
             </div>
             <div class="p-3">
-              <h4 class="text-xs font-bold text-white">Level 04: Platinum (Elite Earner)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Silver aerodynamic wings with cyan crystal core.</p>
+              <h4 class="text-xs font-bold text-white">04. Platinum Cyber-Aero Sigil</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Hypercar aerodynamic swept-back wings and cyan cold-fusion reactor.</p>
             </div>
           </div>
 
-          <!-- Ruby Orb -->
+          <!-- Unique Emerald Sovereign -->
           <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
             <div class="relative overflow-hidden h-48">
-              <img src="./assets/badge_orb_ruby.jpg" alt="Level 08 Ruby" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <span class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 08</span>
+              <img src="./assets/badge_unique_emerald.jpg" alt="Unique Emerald" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-emerald-500 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 06 UNIQUE</span>
             </div>
             <div class="p-3">
-              <h4 class="text-xs font-bold text-white">Level 08: Ruby (Elite)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Blood-red ruby crystal with rose gold crown in glass sphere.</p>
+              <h4 class="text-xs font-bold text-white">06. Emerald Sovereign Relic</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Hovering emerald crystal with circuit lines and brushed platinum star-leaves.</p>
             </div>
           </div>
 
-          <!-- Legend Orb -->
+          <!-- Unique Ruby Reactor -->
           <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
             <div class="relative overflow-hidden h-48">
-              <img src="./assets/badge_orb_legend.jpg" alt="Level 10 Legend" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-              <span class="absolute top-2 right-2 bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 10</span>
+              <img src="./assets/badge_unique_ruby.jpg" alt="Unique Ruby" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">LV 08 UNIQUE</span>
             </div>
             <div class="p-3">
-              <h4 class="text-xs font-bold text-white">Level 10: Legend (VELOOP Legend)</h4>
-              <p class="text-[11px] text-slate-400 mt-0.5">Golden spreading wings and imperial star crown regalia.</p>
+              <h4 class="text-xs font-bold text-white">08. Ruby Crimson Reactor Core</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Blood-pigeon crystal hovering in magnetic confinement with rose gold buttresses.</p>
+            </div>
+          </div>
+
+          <!-- Unique Legend Singularity -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/badge_unique_legend.jpg" alt="Unique Legend" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-gradient-to-r from-amber-400 to-pink-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded shadow">LV 10 PINNACLE</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">10. Legend Celestial Singularity</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Galaxy hyper-cube singularity with solar wings and 5-star diamond crown.</p>
             </div>
           </div>
 
@@ -474,10 +496,35 @@
           <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
             <div class="relative overflow-hidden h-48">
               <img src="./assets/mining_hero_ultra.jpg" alt="Quantum Mining Console Ultra" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-amber-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">HERO 16:9</span>
             </div>
             <div class="p-3">
               <h4 class="text-xs font-bold text-white">Quantum Mining Terminal (16:9)</h4>
               <p class="text-[11px] text-slate-400 mt-0.5">Levitating core minting coins into holographic crystal vault.</p>
+            </div>
+          </div>
+
+          <!-- Platinum Wings Orb -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/badge_orb_platinum.jpg" alt="Platinum Orb" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-cyan-400 text-slate-950 text-[10px] font-bold px-2 py-0.5 rounded shadow">GLASS POD</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Platinum Wings Glass Pod</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Wings inside spherical glass pod with cyan ambient rim glow.</p>
+            </div>
+          </div>
+
+          <!-- App Profile Mockup -->
+          <div class="bg-[#191D32] border border-slate-800 rounded-2xl overflow-hidden shadow-lg group">
+            <div class="relative overflow-hidden h-48">
+              <img src="./assets/app_profile_mockup_1788963107101.jpg" alt="App Profile Mockup" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+              <span class="absolute top-2 right-2 bg-slate-800 text-slate-200 text-[10px] font-bold px-2 py-0.5 rounded shadow">MOCKUP</span>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-white">Dark UI Profile Screen Mockup</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Full context preview showing badge row, balance card, and navigation.</p>
             </div>
           </div>
         </div>
@@ -492,7 +539,7 @@
             <span>🏛️</span> Executive Design Rationale
           </h3>
           <p class="leading-relaxed text-slate-300">
-            For VELOOP Rewards Task 11, the <strong>Glass Pod Achievement Series</strong> combines the prestige of Swiss horology with futuristic cryptographic token custody. Each tier is preserved inside a floating, refractive glass sphere pod that scales visually from understated bronze laurel wreaths up to winged platinum armatures and crown-crested imperial regalia.
+            To move beyond generic fantasy RPG heraldry, this collection reinvents badges as <strong>Avant-Garde Horology Talismans</strong>. Merging precision Swiss watchmaking mechanics with aerospace hypercar geometry and quantum cryptography, each tier is an original collectible artifact: starting from mechanical copper astrolabe compasses, advancing to solar chronometers and aerodynamic cyber-sigils, and culminating in celestial singularity hyper-cubes.
           </p>
         </div>
 
@@ -500,7 +547,7 @@
           <div class="bg-[#191D32] p-4 rounded-2xl border border-slate-800 space-y-2">
             <h4 class="font-semibold text-white">Figma Layering & Naming Standards</h4>
             <ul class="space-y-1.5 text-slate-400 font-mono text-[11px]">
-              <li>• <span class="text-amber-300">Badge / GlassPod / [Tier] / [State]</span></li>
+              <li>• <span class="text-amber-300">Badge / HorologyTalisman / [Tier] / [State]</span></li>
               <li>• <span class="text-cyan-300">Banner / Mining / [Viewport] / [State]</span></li>
               <li>• <span class="text-emerald-300">Modal / UnlockCelebration / [Tier]</span></li>
               <li>• <span class="text-purple-300">Tag / Rarity / [Common | Uncommon | Rare...]</span></li>
@@ -510,12 +557,12 @@
           <div class="bg-[#191D32] p-4 rounded-2xl border border-slate-800 space-y-2">
             <h4 class="font-semibold text-white">Rarity Escalation System</h4>
             <ul class="space-y-1 text-slate-400 text-xs">
-              <li>• <strong>Common:</strong> Levels 01 & 02 (Bronze, Silver)</li>
-              <li>• <strong>Uncommon:</strong> Levels 03 & 04 (Gold, Platinum)</li>
-              <li>• <strong>Rare:</strong> Levels 05 & 06 (Diamond, Emerald)</li>
-              <li>• <strong>Epic:</strong> Levels 07 & 08 (Sapphire, Ruby)</li>
-              <li>• <strong>Mythic:</strong> Level 09 (Master)</li>
-              <li>• <strong>Legendary:</strong> Level 10 (Legend)</li>
+              <li>• <strong>Common:</strong> Levels 01 & 02 (Genesis Astrolabe, Lunar Chrono)</li>
+              <li>• <strong>Uncommon:</strong> Levels 03 & 04 (Solar Chrono, Cyber-Aero)</li>
+              <li>• <strong>Rare:</strong> Levels 05 & 06 (Diamond Hypercube, Emerald Relic)</li>
+              <li>• <strong>Epic:</strong> Levels 07 & 08 (Sapphire Vortex, Crimson Reactor)</li>
+              <li>• <strong>Mythic:</strong> Level 09 (Damascus Sovereign)</li>
+              <li>• <strong>Legendary:</strong> Level 10 (Celestial Singularity)</li>
             </ul>
           </div>
         </div>
@@ -528,20 +575,20 @@
         
         <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-56 h-56 bg-amber-400/25 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Glass Orb in Modal -->
+        <!-- Large Badge Talisman in Modal -->
         <div class="relative mx-auto w-32 h-32 mb-4 flex items-center justify-center">
           <div class="absolute inset-0 rounded-full bg-amber-400/25 animate-ping" style="animation-duration: 2s;"></div>
-          <div id="modal-badge-container" class="w-28 h-28 rounded-full glass-orb border-2 border-white/40 overflow-hidden relative shadow-2xl flex items-center justify-center">
-            <img id="modal-badge-img" src="./assets/badge_orb_gold.jpg" alt="Badge Modal" class="w-full h-full object-cover">
+          <div id="modal-badge-container" class="w-28 h-28 rounded-2xl talisman-frame border-2 border-white/40 overflow-hidden relative shadow-2xl flex items-center justify-center p-1">
+            <img id="modal-badge-img" src="./assets/badge_unique_gold.jpg" alt="Badge Modal" class="w-full h-full object-cover rounded-xl">
           </div>
         </div>
 
         <div class="inline-block px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-[11px] font-bold tracking-wider uppercase mb-2 border border-amber-400/40">
           Achievement Unlocked
         </div>
-        <h3 id="modal-tier-title" class="text-xl font-black text-white tracking-tight">Level 03: Gold (Reward Hunter)</h3>
+        <h3 id="modal-tier-title" class="text-xl font-black text-white tracking-tight">Level 03: Gold (Solar Chronometer)</h3>
         <p id="modal-tier-desc" class="text-xs text-slate-400 mt-2 leading-relaxed">
-          Substantial proof of dedication. Proven rewards master. You unlocked 250 bonus VE and +12% Hashrate!
+          Mastery of time and yield. Proven computational prospector. Unlocked 250 bonus VE and +12% Hashrate!
         </p>
 
         <div class="mt-6 flex items-center justify-center gap-3">
@@ -676,165 +723,196 @@
       requestAnimationFrame(animateParticles);
     }
 
-    // --- Complete 10-Tier Glass Orb Badge System ---
+    // --- Complete 10-Tier Badge System (Dual Styles) ---
     const BADGES = [
       { 
         id: "01", 
         level: 1, 
         name: "Bronze", 
-        subtitle: "First Step", 
+        subtitle: "Genesis Astrolabe", 
         rarity: "COMMON", 
         status: "unlocked", 
-        material: "Warm Copper & Laurel Wreath", 
+        material: "Satin Copper Gyroscope & Astrolabe Calipers", 
         color: "#CD7F32",
         glow: "rgba(205, 127, 50, 0.4)",
         boost: "+2% Mining Hashrate",
         req: "Complete first 3 mining sessions & earn 50 VE", 
-        tooltip: "First step on your rewards journey. Mining fundamentals established.",
-        image: "./assets/badge_orb_bronze.jpg"
+        tooltip: "First step on your rewards journey. Calibrated celestial navigation.",
+        imageUnique: "./assets/badge_unique_bronze.jpg",
+        imageOrb: "./assets/badge_orb_bronze.jpg"
       },
       { 
         id: "02", 
         level: 2, 
         name: "Silver", 
-        subtitle: "Rising Star", 
+        subtitle: "Lunar Chronograph", 
         rarity: "COMMON", 
         status: "unlocked", 
-        material: "Brushed Sterling Silver & Double Wreath", 
+        material: "Brushed Sterling Silver & Sapphire Bearings", 
         color: "#E2E8F0",
         glow: "rgba(226, 232, 240, 0.4)",
         boost: "+5% Mining Hashrate",
         req: "Maintain a 7-day streak & accumulate 500 VE", 
-        tooltip: "Consistent daily mining activity unlocked silver status.",
-        image: "./assets/badge_master_template_1788962999763.jpg"
+        tooltip: "Consistent daily mining activity unlocked silver precision.",
+        imageUnique: "./assets/badge_master_template_1788962999763.jpg",
+        imageOrb: "./assets/badge_master_template_1788962999763.jpg"
       },
       { 
         id: "03", 
         level: 3, 
         name: "Gold", 
-        subtitle: "Reward Hunter", 
+        subtitle: "Solar Chronometer", 
         rarity: "UNCOMMON", 
         status: "unlocked", 
-        material: "24K Polished Yellow Gold & Sunburst Wreath", 
+        material: "24K Mirror Gold & Horology Gearwork Core", 
         color: "#FFD043",
         glow: "rgba(255, 208, 67, 0.5)",
         boost: "+12% Mining Hashrate",
         req: "Accumulate 2,500 VE through mining and staking tasks", 
-        tooltip: "Substantial proof of dedication. Proven rewards master.",
-        image: "./assets/badge_orb_gold.jpg"
+        tooltip: "Mastery of time and yield. Proven computational prospector.",
+        imageUnique: "./assets/badge_unique_gold.jpg",
+        imageOrb: "./assets/badge_orb_gold.jpg"
       },
       { 
         id: "04", 
         level: 4, 
         name: "Platinum", 
-        subtitle: "Elite Earner", 
+        subtitle: "Cyber-Aero Sigil", 
         rarity: "UNCOMMON", 
         status: "unlocked", 
-        material: "Cold-Rolled Platinum & Aerodynamic Wings", 
+        material: "Cold-Rolled Platinum & Swept-Back Wing Fins", 
         color: "#64B5F6",
         glow: "rgba(100, 181, 246, 0.5)",
         boost: "+20% Mining Hashrate",
         req: "Complete 50 mining cycles with >95% uptime", 
-        tooltip: "Precision validator standing among elite network contributors.",
-        image: "./assets/badge_orb_platinum.jpg"
+        tooltip: "Aerodynamic precision standing among elite network validators.",
+        imageUnique: "./assets/badge_unique_platinum.jpg",
+        imageOrb: "./assets/badge_orb_platinum.jpg"
       },
       { 
         id: "05", 
         level: 5, 
         name: "Diamond", 
-        subtitle: "High Achiever", 
+        subtitle: "Hyper-Cube Matrix", 
         rarity: "RARE", 
         status: "locked", 
-        material: "Refractive Diamond Matrix & Titanium Prongs", 
+        material: "Refractive Crystalline Prisms & Titanium Prongs", 
         color: "#BAE6FD",
         glow: "rgba(186, 230, 253, 0.4)",
         boost: "+35% Mining Hashrate",
         req: "Hold and compound 10,000 VE for 30 consecutive days", 
         tooltip: "Unshakable conviction. Diamond-grade reserve status achieved.",
-        image: "./assets/badge_locked_state_1788963065355.jpg"
+        imageUnique: "./assets/badge_locked_state_1788963065355.jpg",
+        imageOrb: "./assets/badge_locked_state_1788963065355.jpg"
       },
       { 
         id: "06", 
         level: 6, 
         name: "Emerald", 
-        subtitle: "Reward Master", 
+        subtitle: "Bio-Quantum Sovereign", 
         rarity: "RARE", 
         status: "locked", 
-        material: "Imperial Emerald Gemstone & Platinum Laurel", 
+        material: "Imperial Emerald Crystal & Platinum Titanium Leaves", 
         color: "#34D399",
         glow: "rgba(52, 211, 153, 0.4)",
         boost: "+50% Mining Hashrate",
         req: "Achieve 25,000 total VE earnings and refer 3 active miners", 
-        tooltip: "Sovereign growth engine powering ecosystem expansion.",
-        image: "./assets/badge_locked_state_1788963065355.jpg"
+        tooltip: "Sovereign bio-quantum engine powering ecosystem expansion.",
+        imageUnique: "./assets/badge_unique_emerald.jpg",
+        imageOrb: "./assets/badge_unique_emerald.jpg"
       },
       { 
         id: "07", 
         level: 7, 
         name: "Sapphire", 
-        subtitle: "Top Performer", 
+        subtitle: "Stellar Vortex", 
         rarity: "EPIC", 
         status: "locked", 
-        material: "Midnight Star Sapphire & Sculpted Wings", 
+        material: "Midnight Star Sapphire & Orbital Fluted Wings", 
         color: "#60A5FA",
         glow: "rgba(96, 165, 250, 0.4)",
         boost: "+65% Mining Hashrate",
         req: "Reach 50,000 VE accumulated with zero missed cycles in 60d", 
-        tooltip: "Steadfast reliability guarding the forefront of network yield.",
-        image: "./assets/badge_locked_state_1788963065355.jpg"
+        tooltip: "Steadfast vortex guarding the forefront of network yield.",
+        imageUnique: "./assets/badge_locked_state_1788963065355.jpg",
+        imageOrb: "./assets/badge_locked_state_1788963065355.jpg"
       },
       { 
         id: "08", 
         level: 8, 
         name: "Ruby", 
-        subtitle: "Elite", 
+        subtitle: "Crimson Reactor", 
         rarity: "EPIC", 
         status: "locked", 
-        material: "Blood-Pigeon Ruby Gemstone & Rose Gold Crown", 
+        material: "Blood-Red Ruby Polyhedron & Rose Gold Buttresses", 
         color: "#FB7185",
         glow: "rgba(251, 113, 133, 0.5)",
         boost: "+80% Mining Hashrate",
         req: "Accumulate 100,000 VE & participate in 10 governance proposals", 
         tooltip: "Commanding authority and unwavering engagement in VELOOP governance.",
-        image: "./assets/badge_orb_ruby.jpg"
+        imageUnique: "./assets/badge_unique_ruby.jpg",
+        imageOrb: "./assets/badge_orb_ruby.jpg"
       },
       { 
         id: "09", 
         level: 9, 
         name: "Master", 
-        subtitle: "Master Achiever", 
+        subtitle: "Damascus Sovereign", 
         rarity: "MYTHIC", 
         status: "locked", 
-        material: "Damascus Titanium & Triple-Spike Coronet", 
+        material: "Blackened Damascus Titanium & Triple Coronet", 
         color: "#C084FC",
         glow: "rgba(192, 132, 252, 0.5)",
         boost: "+90% Mining Hashrate",
         req: "Reach 250,000 VE lifetime earnings & rank in top 1% miners", 
         tooltip: "Supreme operational mastery. One of the top yielders worldwide.",
-        image: "./assets/badge_locked_state_1788963065355.jpg"
+        imageUnique: "./assets/badge_locked_state_1788963065355.jpg",
+        imageOrb: "./assets/badge_locked_state_1788963065355.jpg"
       },
       { 
         id: "10", 
         level: 10, 
         name: "Legend", 
-        subtitle: "VELOOP Legend", 
+        subtitle: "Celestial Singularity", 
         rarity: "LEGENDARY", 
         status: "locked", 
-        material: "Celestial Golden Wings & Imperial Star Tiara", 
+        material: "Galaxy Hyper-Cube, 24K Solar Wings & 5-Star Crown", 
         color: "#FBBF24",
         glow: "rgba(251, 191, 36, 0.65)",
-        boost: "+100% Mining Hashrate (2x)",
+        boost: "+100% Mining Hashrate (2x)", 
         req: "Cross 1,000,000 VE lifetime volume and achieve legendary status", 
-        tooltip: "The pinnacle of VELOOP achievement. Immortalized in rewards history.",
-        image: "./assets/badge_orb_legend.jpg"
+        tooltip: "The cosmic pinnacle of VELOOP achievement. Singularity unlocked.",
+        imageUnique: "./assets/badge_unique_legend.jpg",
+        imageOrb: "./assets/badge_orb_legend.jpg"
       }
     ];
 
     let selectedBadgeIndex = 2; // Default Gold (LV 03)
+    let badgeStyle = 'unique'; // 'unique' or 'orb'
     let currentFilter = 'all';
     let isMining = true;
     let isTurbo = false;
     let veAmount = 1480.25;
+
+    function setBadgeStyle(style) {
+      playBeep(700, 'sine', 0.05);
+      badgeStyle = style;
+      
+      const btnU = document.getElementById('style-unique');
+      const btnO = document.getElementById('style-orb');
+      const tag = document.getElementById('badge-style-tag');
+
+      if (style === 'unique') {
+        btnU.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-bold transition shadow-sm text-[11px]';
+        btnO.className = 'px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium transition text-[11px]';
+        tag.innerText = 'HOROLOGY TALISMANS';
+      } else {
+        btnO.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 font-bold transition shadow-sm text-[11px]';
+        btnU.className = 'px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium transition text-[11px]';
+        tag.innerText = 'GLASS ORB PODS';
+      }
+      renderBadges();
+    }
 
     function getRarityStyle(rarity) {
       switch(rarity) {
@@ -861,7 +939,6 @@
       grid.innerHTML = '';
 
       BADGES.forEach((b, idx) => {
-        // Filter logic
         if (currentFilter === 'unlocked' && b.status !== 'unlocked') return;
         if (currentFilter === 'locked' && b.status !== 'locked') return;
 
@@ -881,6 +958,7 @@
         };
 
         const rarityClass = getRarityStyle(b.rarity);
+        const activeImg = (badgeStyle === 'unique') ? b.imageUnique : b.imageOrb;
 
         card.innerHTML = `
           <!-- Top Row: ID and Status Icon -->
@@ -891,24 +969,20 @@
             </span>
           </div>
 
-          <!-- Center: Suspended Glass Orb Capsule -->
+          <!-- Center: Suspended Artifact / Pod -->
           <div class="w-24 h-24 sm:w-28 sm:h-28 relative my-2 flex items-center justify-center">
             
-            <!-- Ambient Glow Behind Orb -->
-            <div class="absolute inset-0 rounded-full blur-xl pointer-events-none opacity-40 transition group-hover:opacity-70" style="background: ${b.glow};"></div>
+            <div class="absolute inset-0 rounded-2xl blur-xl pointer-events-none opacity-40 transition group-hover:opacity-75" style="background: ${b.glow};"></div>
 
-            <!-- Glass Pod Orb Frame with Specular Highlights -->
-            <div class="w-full h-full rounded-full glass-orb border border-white/20 overflow-hidden relative shadow-xl flex items-center justify-center p-1">
-              <img src="${b.image}" alt="${b.name}" class="w-full h-full object-cover rounded-full transform group-hover:scale-110 transition duration-500 ${isUnlocked ? '' : 'filter grayscale contrast-75 brightness-75'}">
+            <div class="w-full h-full rounded-2xl talisman-frame border border-white/20 overflow-hidden relative shadow-xl flex items-center justify-center p-1">
+              <img src="${activeImg}" alt="${b.name}" class="w-full h-full object-cover rounded-xl transform group-hover:scale-110 transition duration-500 ${isUnlocked ? '' : 'filter grayscale contrast-75 brightness-75'}">
               
-              <!-- Specular reflection arc -->
-              <div class="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-transparent to-black/30 pointer-events-none"></div>
+              <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 via-transparent to-black/30 pointer-events-none"></div>
 
-              <!-- Lock overlay icon if locked -->
-              ${!isUnlocked ? '<div class="absolute inset-0 bg-black/40 flex items-center justify-center text-base">🔒</div>' : ''}
+              ${!isUnlocked ? '<div class="absolute inset-0 bg-black/45 flex items-center justify-center text-base backdrop-blur-[1px]">🔒</div>' : ''}
             </div>
 
-            <!-- Floating Level Pill at Lower Rim -->
+            <!-- Floating Level Pill -->
             <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-slate-950/90 border border-slate-700/80 text-[10px] font-mono font-bold ${isUnlocked ? 'text-amber-300' : 'text-slate-400'} shadow">
               LV ${b.id}
             </div>
@@ -944,16 +1018,16 @@
       if (!card) return;
       const isUnlocked = b.status === 'unlocked';
       const rarityClass = getRarityStyle(b.rarity);
+      const activeImg = (badgeStyle === 'unique') ? b.imageUnique : b.imageOrb;
 
       card.innerHTML = `
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div class="flex items-center gap-4">
             
-            <!-- Large Glass Orb Pod in Detail Card -->
-            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full glass-orb border-2 border-white/30 overflow-hidden relative shadow-2xl flex-shrink-0 flex items-center justify-center">
-              <img src="${b.image}" alt="${b.name}" class="w-full h-full object-cover rounded-full ${isUnlocked ? '' : 'filter grayscale contrast-75'}">
-              <div class="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 via-transparent to-black/30 pointer-events-none"></div>
-              ${!isUnlocked ? '<div class="absolute inset-0 bg-black/40 flex items-center justify-center text-xl">🔒</div>' : ''}
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl talisman-frame border-2 border-white/30 overflow-hidden relative shadow-2xl flex-shrink-0 flex items-center justify-center p-1">
+              <img src="${activeImg}" alt="${b.name}" class="w-full h-full object-cover rounded-xl ${isUnlocked ? '' : 'filter grayscale contrast-75'}">
+              <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 via-transparent to-black/30 pointer-events-none"></div>
+              ${!isUnlocked ? '<div class="absolute inset-0 bg-black/45 flex items-center justify-center text-xl backdrop-blur-[1px]">🔒</div>' : ''}
             </div>
 
             <div>
@@ -969,7 +1043,6 @@
             </div>
           </div>
 
-          <!-- Actions -->
           <div class="flex items-center gap-2.5 self-end sm:self-center">
             <button onclick="toggleBadgeLock(${selectedBadgeIndex})" class="text-xs px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold transition">
               ${isUnlocked ? 'Set as Locked' : 'Unlock Badge'}
@@ -980,10 +1053,9 @@
           </div>
         </div>
 
-        <!-- 3 Inspection Metric Blocks -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-6 pt-5 border-t border-slate-800/90 text-xs">
           <div class="bg-[#121422] p-3.5 rounded-2xl border border-slate-800">
-            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Material & Armor</span>
+            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Material & Craftsmanship</span>
             <span class="font-semibold text-slate-200">${b.material}</span>
           </div>
           <div class="bg-[#121422] p-3.5 rounded-2xl border border-slate-800">
@@ -1011,9 +1083,9 @@
         const btn = document.getElementById('filter-' + f);
         if (btn) {
           if (f === filter) {
-            btn.className = 'px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold transition shadow-sm';
+            btn.className = 'px-2.5 py-1 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/30 font-bold transition text-[11px]';
           } else {
-            btn.className = 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium transition';
+            btn.className = 'px-2.5 py-1 rounded-lg text-slate-400 hover:text-slate-200 font-medium transition text-[11px]';
           }
         }
       });
@@ -1127,10 +1199,11 @@
       const title = document.getElementById('modal-tier-title');
       const desc = document.getElementById('modal-tier-desc');
       const img = document.getElementById('modal-badge-img');
+      const activeImg = (badgeStyle === 'unique') ? b.imageUnique : b.imageOrb;
 
       title.innerText = `Level ${b.id}: ${b.name} (${b.subtitle})`;
       desc.innerText = `${b.tooltip} Congratulations, you have unlocked the ${b.name} tier! Claimed 250 bonus VE and ${b.boost}.`;
-      img.src = b.image;
+      img.src = activeImg;
 
       modal.classList.remove('hidden');
     }
